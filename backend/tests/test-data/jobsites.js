@@ -1,36 +1,25 @@
 const postTestData = [
-  {
-    body: {
-      JobsiteID: "4",
-      JobsiteName: "Acme",
-    },
-  },
-  {
-    body: {
-      JobsiteID: "5",
-      JobsiteName: "Insulation Corp",
-    },
-  },
+  { body: { JobsiteID: "4", JobsiteName: "testDataXYZ" } },
+  { body: { JobsiteID: "5", JobsiteName: "testDataXYZ" } },
 ];
 
 const putTestData = [
   {
-    body: {
-      JobsiteID: "5",
-      JobsiteName: "Insulation Industries",
-    },
+    body: { JobsiteID: "5", JobsiteName: "testDataXYZ" },
     table: "jobsites",
     useEmpty: {},
   },
 ];
 
 const deleteTestData = [
+  { body: { JobsiteID: "", JobsiteName: "testDataXYZ" } },
+];
+
+const failTestData = [
   {
-    body: {
-      JobsiteID: "4, 5",
-      JobsiteName: "",
-    },
+    body: { JobsiteID: "2", JobsiteName: "Illegal Overwrite" },
+    expectedStatus: 404,
   },
 ];
 
-module.exports = [postTestData, putTestData, deleteTestData];
+module.exports = [postTestData, putTestData, deleteTestData, failTestData];

@@ -7,7 +7,7 @@ const postTestData = [
       Length: "2",
       Width: "2",
       Height: "2",
-      SupplierName: "Glue Industries",
+      SupplierName: "testDataXYZ",
       TotalAvailable: "10",
       LostAmounts: "0",
     },
@@ -20,7 +20,7 @@ const postTestData = [
       Length: "6",
       Width: "6",
       Height: "6",
-      SupplierName: "Widget Makers",
+      SupplierName: "testDataXYZ",
       TotalAvailable: "100",
       LostAmounts: "",
     },
@@ -36,11 +36,11 @@ const putTestData = [
       Length: "",
       Width: "",
       Height: "",
-      SupplierName: "Glue Corp",
+      SupplierName: "testDataXYZ",
       TotalAvailable: "",
       LostAmounts: "",
     },
-    table: "",
+    table: "materials",
     useEmpty: {},
   },
 ];
@@ -48,17 +48,21 @@ const putTestData = [
 const deleteTestData = [
   {
     body: {
-      MaterialID: "5, 6",
+      MaterialID: "",
       Name: "",
       MaterialType: "",
       Length: "",
       Width: "",
       Height: "",
-      SupplierName: "",
+      SupplierName: "testDataXYZ",
       TotalAvailable: "",
       LostAmounts: "",
     },
   },
 ];
 
-module.exports = [postTestData, putTestData, deleteTestData];
+const failTestData = [
+  { body: { MaterialID: "3", Name: "Corrupted Entry" }, expectedStatus: 404 },
+];
+
+module.exports = [postTestData, putTestData, deleteTestData, failTestData];

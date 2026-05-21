@@ -4,7 +4,7 @@ const postTestData = [
       EmpID: "21",
       Fname: "Test",
       Lname: "Dummy",
-      Title: "Tester",
+      Title: "testDataXYZ",
       SupervisorID: "1",
       JobsiteID: "1",
     },
@@ -14,7 +14,7 @@ const postTestData = [
       EmpID: "22",
       Fname: "testing",
       Lname: "Dummy",
-      Title: "Tester",
+      Title: "testDataXYZ",
       SupervisorID: "1",
       JobsiteID: "1",
     },
@@ -27,7 +27,7 @@ const putTestData = [
       EmpID: "21",
       Fname: "testing",
       Lname: "Dummies",
-      Title: "APITester",
+      Title: "testDataXYZ",
       SupervisorID: "2",
       JobsiteID: "2",
     },
@@ -40,13 +40,20 @@ const deleteTestData = [
   {
     body: {
       EmpID: "",
-      Fname: "testing",
+      Fname: "",
       Lname: "",
-      Title: "",
+      Title: "testDataXYZ",
       SupervisorID: "",
       JobsiteID: "",
     },
   },
 ];
 
-module.exports = [postTestData, putTestData, deleteTestData];
+const failTestData = [
+  {
+    body: { EmpID: "4", Fname: "Hacker", Lname: "Attack", Title: "Malicious" },
+    expectedStatus: 404,
+  },
+];
+
+module.exports = [postTestData, putTestData, deleteTestData, failTestData];

@@ -14,7 +14,7 @@ const allowedOrigins = [process.env.FRONTEND_URL, process.env.DEV_URL];
 const corsOptions = {
   origin: (origin, callback) => {
     if (!origin || allowedOrigins.includes(origin)) {
-      console.log("Allowed Origin: ", origin);
+      //console.log("Allowed Origin: ", origin); //Comment out when testing
 
       callback(null, true);
     } else {
@@ -81,12 +81,14 @@ app.use(errorHandler);
 ///////////////////////////////////////////////////
 
 //For development
-/* async function start() {
+/* let serverInstance; */
+
+/* async function start() { //uncomment here for dev//
   try {
     // await connectToDB();
     // await sequelize.authenticate();
     console.log("Connected to the MySQL database.");
-
+    //serverInstance =
     app.listen(8081, () => {
       console.log("Server listening...");
     });
@@ -94,9 +96,17 @@ app.use(errorHandler);
     console.log(error);
     console.log("Server Initialization Aborted.");
   }
-}
+} */ //uncomment here for dev//
 
-start(); */
+/* const shutdown = () => {
+  console.log("Shutting down...");
+  serverInstance.close(() => {
+    console.log("HTTP server closed.");
+    process.exit(0);
+  });
+}; */
+
+//start(); //uncomment here for dev//
 
 /* console.log("models: ");
 console.log(sequelize.models); */

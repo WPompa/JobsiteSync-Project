@@ -1,16 +1,16 @@
 const postTestData = [
   {
     body: {
-      StorageAreaID: "1",
-      MaterialID: "2",
-      Amount: "123",
+      StorageAreaID: "5",
+      MaterialID: "6",
+      Amount: "9912",
     },
   },
   {
     body: {
-      StorageAreaID: "2",
-      MaterialID: "1",
-      Amount: "12345",
+      StorageAreaID: "6",
+      MaterialID: "5",
+      Amount: "9912",
     },
   },
 ];
@@ -18,9 +18,9 @@ const postTestData = [
 const putTestData = [
   {
     body: {
-      StorageAreaID: "1",
-      MaterialID: "2",
-      Amount: "12345",
+      StorageAreaID: "5",
+      MaterialID: "6",
+      Amount: "9912",
     },
     table: "stored_in",
     useEmpty: {},
@@ -30,11 +30,21 @@ const putTestData = [
 const deleteTestData = [
   {
     body: {
-      StorageAreaID: "",
-      MaterialID: "",
-      Amount: "12345",
+      StorageAreaID: "5 ,   6",
+      MaterialID: "6,        5",
+      Amount: "",
     },
   },
 ];
 
-module.exports = [postTestData, putTestData, deleteTestData];
+const failTestData = [
+  {
+    body: {
+      StorageAreaID: "2",
+      MaterialID: "3",
+    },
+    expectedStatus: 404,
+  },
+];
+
+module.exports = [postTestData, putTestData, deleteTestData, failTestData];

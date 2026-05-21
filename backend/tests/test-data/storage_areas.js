@@ -5,10 +5,10 @@ const postTestData = [
       Length: "55",
       Width: "55",
       Height: "55",
-      Location: "Laydown 5",
+      Location: "testDataXYZ",
       JobsiteID: "1",
       TotalStored: "5",
-      Is_container: "1",
+      Is_Container: "1",
     },
   },
   {
@@ -17,10 +17,10 @@ const postTestData = [
       Length: "66",
       Width: "66",
       Height: "66",
-      Location: "Laydown 6",
+      Location: "testDataXYZ",
       JobsiteID: "2",
       TotalStored: "6",
-      Is_container: "0",
+      Is_Container: "0",
     },
   },
 ];
@@ -32,10 +32,10 @@ const putTestData = [
       Length: "56",
       Width: "56",
       Height: "56",
-      Location: "",
+      Location: "testDataXYZ",
       JobsiteID: "",
       TotalStored: "56",
-      Is_container: "0",
+      Is_Container: "0",
     },
     table: "storage_areas",
     useEmpty: {},
@@ -45,16 +45,23 @@ const putTestData = [
 const deleteTestData = [
   {
     body: {
-      StorageAreaID: "5,6",
+      StorageAreaID: "",
       Length: "",
       Width: "",
       Height: "",
-      Location: "",
+      Location: "testDataXYZ",
       JobsiteID: "",
       TotalStored: "",
-      Is_container: "",
+      Is_Container: "",
     },
   },
 ];
 
-module.exports = [postTestData, putTestData, deleteTestData];
+const failTestData = [
+  {
+    body: { StorageAreaID: "1", Location: "Unauthorized Zone Modification" },
+    expectedStatus: 404,
+  },
+];
+
+module.exports = [postTestData, putTestData, deleteTestData, failTestData];
