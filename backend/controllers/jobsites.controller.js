@@ -31,6 +31,19 @@ const updateJobsites = asyncWrapper(async (req, res, next) => {
 
   const result = await service.updateJobsites(jobsites, body, useEmpty);
 
+  if (result === null) {
+    return res.status(204).send();
+  }
+
+  res.status(200).json({ status: "Success!", result });
+});
+
+const patchJobsite = asyncWrapper(async (req, res, next) => {
+  const { id } = req.params;
+  const { jobsites } = req.models;
+
+  const result = await service.patchJobsite(jobsites, id, req.body);
+
   res.status(200).json({ status: "Success!", result });
 });
 
@@ -47,5 +60,6 @@ module.exports = {
   getJobsites,
   createJobsite,
   updateJobsites,
+  patchJobsite,
   deleteJobsites,
 };

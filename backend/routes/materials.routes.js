@@ -4,6 +4,7 @@ const {
   getMaterials,
   createMaterial,
   updateMaterials,
+  patchMaterial,
   deleteMaterials,
 } = require("../controllers/materials.controller");
 
@@ -13,5 +14,7 @@ router
   .post(createMaterial)
   .put(updateMaterials)
   .delete(deleteMaterials);
+
+router.route("/materials/:id").patch(patchMaterial);
 
 module.exports = router;

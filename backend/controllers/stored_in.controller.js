@@ -31,6 +31,18 @@ const updateStored_In = asyncWrapper(async (req, res, next) => {
 
   const result = await service.updateStored_In(stored_in, body, useEmpty);
 
+  if (result === null) {
+    return res.status(204).send();
+  }
+
+  res.status(200).json({ status: "Success!", result });
+});
+
+const patchStored_In = asyncWrapper(async (req, res, next) => {
+  const { stored_in } = req.models;
+
+  const result = await service.patchStored_In(stored_in, req.query, req.body);
+
   res.status(200).json({ status: "Success!", result });
 });
 
@@ -47,5 +59,6 @@ module.exports = {
   getStored_In,
   createStored_In,
   updateStored_In,
+  patchStored_In,
   deleteStored_In,
 };

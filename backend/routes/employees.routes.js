@@ -4,6 +4,7 @@ const {
   getEmployees,
   createEmployee,
   updateEmployees,
+  patchEmployee,
   deleteEmployees,
 } = require("../controllers/employees.controller");
 
@@ -13,5 +14,7 @@ router
   .post(createEmployee)
   .put(updateEmployees)
   .delete(deleteEmployees);
+
+router.route("/employees/:id").patch(patchEmployee);
 
 module.exports = router;

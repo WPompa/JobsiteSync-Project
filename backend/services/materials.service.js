@@ -6,6 +6,7 @@ const {
   processKeyValues,
   setUpdateOptions,
   setDeleteOptions,
+  filterImmutableData,
 } = require("../utils/serviceHelpers");
 
 const table = {
@@ -15,7 +16,6 @@ const table = {
 
 const getMaterials = async (materialModel, currentPage, currentLimit) => {
   const totalCount = await materialModel.count();
-  console.log(totalCount);
 
   const { offset, limit, metadata } = getPagination(
     currentPage,
@@ -56,22 +56,27 @@ const createMaterial = async (materialModel, materialData) => {
 
   //If Primary key value is given, check if it is already in use.
   if (materialData?.MaterialID) {
-    const exists = await materialModel.findByPk(materialData.MaterialID, {
-      raw: true,
+    const [instanceObj, isCreated] = await materialModel.findOrCreate({
+      where: { MaterialID: materialData.MaterialID },
+      defaults: materialData,
     });
 
-    if (exists) {
-      console.log(exists);
+    if (!isCreated) {
+      console.log(
+        `Material With ID "${materialData.MaterialID}" Already Exists!`,
+      );
       throw new AppError(
         `Material With ID "${materialData.MaterialID}" Already Exists!`,
-        200,
+        409,
       );
     }
+
+    return instanceObj.get({ plain: true });
   }
 
   const result = await materialModel.create(materialData); //{fields: []} to exclude injected key-values.
 
-  return result;
+  return result.get({ plain: true });
 };
 
 //useEmpty is an object with booleans used for flagging values that should be set to null.
@@ -88,15 +93,69 @@ const updateMaterials = async (materialModel, materialData, useEmpty) => {
     true,
   );
 
+  filterImmutableData(primaryKeyValuesArr, table.name);
+
+  if (primaryKeyValuesArr[0].MaterialID.length === 0) {
+    throw new AppError("Cannot modify starter data!", 400);
+  }
+
   const options = setUpdateOptions(table.primaryKeys, primaryKeyValuesArr);
 
-  const result = await materialModel.update(materialData, {
+  await materialModel.update(materialData, {
     where: options,
   });
 
-  //result[0] is just the number of affected rows.
-  //Sequelize doesn't return anything else for MySQL.
-  return "Updated rows: " + result[0];
+  const updatedRows = await materialModel.findAll({
+    where: options,
+    raw: true,
+  });
+
+  if (!updatedRows || updatedRows.length === 0) {
+    throw new AppError(
+      "No record(s) found matching the provided identifier(s).",
+      404,
+    );
+  }
+
+  if (updatedRows.length >= 50) {
+    return null;
+  }
+
+  return updatedRows;
+};
+
+const patchMaterial = async (materialModel, MaterialID, patchData) => {
+  delete patchData.MaterialID;
+
+  if (!patchData || Object.keys(patchData).length === 0) {
+    throw new AppError("Body cannot be empty.", 400);
+  }
+
+  const dataToFilter = { MaterialID: [MaterialID] };
+
+  filterImmutableData(dataToFilter, table.name);
+
+  if (dataToFilter.MaterialID.length === 0) {
+    throw new AppError("Cannot modify starter data!", 400);
+  }
+
+  const result = await materialModel.update(patchData, {
+    where: { MaterialID },
+  });
+
+  if (result[0] > 0) {
+    const updatedRow = await materialModel.findOne({ where: { MaterialID } });
+
+    return updatedRow.get({ plain: true });
+  }
+
+  const existingRow = await materialModel.findOne({ where: { MaterialID } });
+
+  if (!existingRow) {
+    throw new AppError(`No record found for material: ${MaterialID}`, 404);
+  }
+
+  return existingRow.get({ plain: true });
 };
 
 const deleteMaterials = async (materialModel, materialData) => {
@@ -107,20 +166,33 @@ const deleteMaterials = async (materialModel, materialData) => {
     materialData,
   );
 
-  const options = setDeleteOptions(keyValuesArr);
+  if (!keyValuesArr || keyValuesArr.length === 0) {
+    throw new AppError(
+      "Deletion Denied: No valid matching criteria provided.",
+      400,
+    );
+  }
+
+  const options = setDeleteOptions(keyValuesArr, "MaterialID");
 
   const result = await materialModel.destroy({
     where: options,
   });
 
-  //Destroy() returns a number for how many rows where affected.
-  //Sequelize doesn't return anything else for MySQL.
-  return "Updated rows: " + result;
+  if (result === 0) {
+    throw new AppError("No matching records found to delete.", 404);
+  }
+
+  return {
+    deletedRows: result,
+    identifiers: materialData,
+  };
 };
 
 module.exports = {
   getMaterials,
   createMaterial,
   updateMaterials,
+  patchMaterial,
   deleteMaterials,
 };

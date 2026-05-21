@@ -36,6 +36,19 @@ const updateStorage_Areas = asyncWrapper(async (req, res, next) => {
     useEmpty,
   );
 
+  if (result === null) {
+    return res.status(204).send();
+  }
+
+  res.status(200).json({ status: "Success!", result });
+});
+
+const patchStorage_Area = asyncWrapper(async (req, res, next) => {
+  const { id } = req.params;
+  const { storage_areas } = req.models;
+
+  const result = await service.patchStorage_Area(storage_areas, id, req.body);
+
   res.status(200).json({ status: "Success!", result });
 });
 
@@ -52,5 +65,6 @@ module.exports = {
   getStorage_Areas,
   createStorage_Area,
   updateStorage_Areas,
+  patchStorage_Area,
   deleteStorage_Areas,
 };

@@ -4,6 +4,7 @@ const {
   getJobsites,
   createJobsite,
   updateJobsites,
+  patchJobsite,
   deleteJobsites,
 } = require("../controllers/jobsites.controller");
 
@@ -13,5 +14,7 @@ router
   .post(createJobsite)
   .put(updateJobsites)
   .delete(deleteJobsites);
+
+router.route("/jobsites/:id").patch(patchJobsite);
 
 module.exports = router;

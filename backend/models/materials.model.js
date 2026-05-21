@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
             args: [2, 64],
           },
           is: {
-            args: /^[a-z\s.]+$/i,
+            args: /^[a-z\d\s.]+$/i,
             msg: "Material name can only use alphabet characters, spaces, or periods.",
           },
         },
@@ -56,7 +56,7 @@ module.exports = (sequelize, DataTypes) => {
             args: [2, 64],
           },
           is: {
-            args: /^[a-z\s.]+$/i,
+            args: /^[a-z\d\s.]+$/i,
             msg: "Supplier name can only use alphabet characters, spaces, or periods.",
           },
         },
