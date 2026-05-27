@@ -66,6 +66,62 @@
   font-size: 0.65rem;
 }
 
+.edit-toggle {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  width: 75%;
+  margin: 2px auto 0;
+}
+
+.card-btn {
+  font-family: inherit;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.35rem 0.5rem;
+  margin: 0;
+  border-radius: 0.35rem;
+  cursor: pointer;
+  width: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.03);
+  color: rgba(255, 255, 255, 0.85);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.card-btn.edit:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+}
+.card-btn.save {
+  background: rgba(34, 197, 94, 0.1);
+  border-color: rgba(34, 197, 94, 0.2);
+  color: #4ade80;
+}
+.card-btn.save:hover {
+  background: rgba(34, 197, 94, 0.25);
+  border-color: rgba(34, 197, 94, 0.4);
+  color: #fff;
+  box-shadow: 0 0 12px rgba(34, 197, 94, 0.2);
+}
+.card-btn.cancel {
+  background: rgba(239, 68, 68, 0.08);
+  border-color: rgba(239, 68, 68, 0.15);
+  color: #f87171;
+}
+.card-btn.cancel:hover {
+  background: rgba(239, 68, 68, 0.2);
+  border-color: rgba(239, 68, 68, 0.35);
+  color: #fff;
+  box-shadow: 0 0 12px rgba(239, 68, 68, 0.15);
+}
+.card-btn:active {
+  transform: scale(0.96);
+}
+
 .divider {
   display: inline-block;
   vertical-align: middle;
@@ -110,6 +166,52 @@
   opacity: 1;
 }
 
+/* Editable stuff */
+.editable-input-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  width: 100%;
+  padding: 0.25rem;
+}
+.editable-input-group input,
+.grid-item input {
+  width: 90%;
+  max-width: 166px;
+  max-height: 2rem;
+  box-sizing: border-box;
+  font-family: inherit;
+  font-size: 0.85rem;
+  background-color: rgba(20, 20, 20, 0.65);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.35rem;
+  padding: 0.35rem 0.5rem;
+  outline: none;
+  box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.4);
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+}
+.editable-input-group input:focus,
+.grid-item input:focus {
+  border-color: var(--accent, #005eff);
+  box-shadow:
+    inset 0 2px 4px 0 rgba(0, 0, 0, 0.4),
+    0 0 8px rgba(0, 94, 255, 0.25);
+}
+.editable-input-group input::placeholder,
+.grid-item input::placeholder {
+  color: rgba(255, 255, 255, 0.3);
+  font-size: 0.75rem;
+}
+
+.flex-row-group {
+  flex-direction: row;
+}
+/*------------------------------------*/
+
 @media only screen and (max-width: 550px) and (orientation: portrait) {
   .views-common {
     border-left: none;
@@ -124,6 +226,21 @@
     font-size: 0.85rem;
     margin-right: auto;
   }
+  /* Editable stuff */
+  .edit-toggle {
+    flex-direction: row;
+    gap: 0.5rem;
+    margin: 0.5rem 0;
+  }
+  .card-btn {
+    font-size: 0.85rem;
+    padding: 0.5rem 1rem;
+  }
+
+  .flex-col-mobile {
+    flex-direction: column;
+  }
+  /*------------------------------------*/
 
   .tooltip-text {
     font-size: 1.25rem;

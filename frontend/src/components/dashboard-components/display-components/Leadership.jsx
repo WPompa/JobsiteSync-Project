@@ -3,14 +3,15 @@ import "./css/views.css";
 import NoPersonalImg from "../../../assets/NoPersonalImg.png";
 import TopBottom from "../../minor-components/TopBottom";
 
-const Leadership = ({
-  EmpID,
-  Name,
-  Title,
-  JobsiteID,
-  JobsiteName,
-  img = NoPersonalImg,
-}) => {
+const Leadership = ({ rowData, rowIndex, tableMeta }) => {
+  const {
+    EmpID,
+    Name,
+    Title,
+    JobsiteID,
+    JobsiteName,
+    img = NoPersonalImg,
+  } = rowData;
   return (
     <div className={`views-common ${styles["leadership-container"]}`}>
       <div className={`grid-item item-img-id ${styles["item-img-id"]}`}>

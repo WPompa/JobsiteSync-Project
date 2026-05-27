@@ -116,12 +116,12 @@ const tables = {
   storage_areas: {
     count: `SELECT COUNT(*) AS Count
         FROM (
-          SELECT SA.StorageAreaID, SA.Location, jobsites.JobsiteName, SA.JobsiteID, SA.Length, SA.Width, SA.Height, SA.TotalStored, SA.is_Container
+          SELECT SA.StorageAreaID, SA.Location, jobsites.JobsiteName, SA.JobsiteID, SA.Length, SA.Width, SA.Height, SA.TotalStored, SA.Is_Container
           FROM storage_areas AS SA
           LEFT JOIN jobsites ON SA.JobsiteID = jobsites.JobsiteID
           ORDER BY SA.JobsiteID ASC
         ) AS Result;`,
-    query: `SELECT SA.StorageAreaID, SA.Location, jobsites.JobsiteName, SA.JobsiteID, SA.Length, SA.Width, SA.Height, SA.TotalStored, SA.is_Container
+    query: `SELECT SA.StorageAreaID, SA.Location, jobsites.JobsiteName, SA.JobsiteID, SA.Length, SA.Width, SA.Height, SA.TotalStored, SA.Is_Container
         FROM storage_areas AS SA
         LEFT JOIN jobsites ON SA.JobsiteID = jobsites.JobsiteID
         ORDER BY SA.JobsiteID ASC

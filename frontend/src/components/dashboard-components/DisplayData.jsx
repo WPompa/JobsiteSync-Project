@@ -1,4 +1,5 @@
 //
+import TableWrapper from "./display-components/TableWrapper";
 import Employees from "./display-components/Employees";
 import Jobsites from "./display-components/Jobsites";
 import StorageAreas from "./display-components/StorageAreas";
@@ -15,26 +16,7 @@ const viewMap = {
   storedin: StoredIn,
 };
 
-const DisplayData = ({ tableToDisplay, data }) => {
-  const getID = (rowData) => {
-    switch (tableToDisplay) {
-      case "employees":
-        return `employees-${rowData.EmpID || Math.random()}`;
-      case "leadership":
-        return `leadership-${rowData.EmpID || Math.random()}`;
-      case "materials":
-        return `materials-${rowData.MaterialID || Math.random()}`;
-      case "jobsites":
-        return `jobsites-${rowData.JobsiteID || Math.random()}`;
-      case "storageareas":
-        return `storageareas-${rowData.StorageAreaID || Math.random()}`;
-      case "storedin":
-        return `${rowData.StorageAreaID || Math.random()}-${rowData.JobsiteID || Math.random()}-${rowData.MaterialID || Math.random()}`;
-      default:
-        throw new Error("No Obtainable Row ID!");
-    }
-  };
-
+const DisplayData = ({ tableToDisplay, data, dataUpdatedAt }) => {
   if (!tableToDisplay) {
     return (
       <div className="display-message">
@@ -45,8 +27,8 @@ const DisplayData = ({ tableToDisplay, data }) => {
 
   const CurrentView = viewMap[tableToDisplay];
 
-  if (CurrentView && data.status === "Success!") {
-    if (data.result.length === 0) {
+  if (CurrentView && data?.status === "Success!") {
+    if (!data.result || data.result.length === 0) {
       return (
         <div className="display-message">
           <p>No records found for {tableToDisplay}.</p>
@@ -55,13 +37,20 @@ const DisplayData = ({ tableToDisplay, data }) => {
     }
 
     return (
-      <>
-        {data.result.map((rowData) => {
-          return <CurrentView key={getID(rowData)} {...rowData} />;
-        })}
-      </>
+      <TableWrapper
+        key={`${tableToDisplay}-${dataUpdatedAt}`}
+        tableToDisplay={tableToDisplay}
+        dataToDisplay={data.result}
+        CurrentView={CurrentView}
+      />
     );
   }
+
+  return (
+    <div className="display-message">
+      <p>Something Went Wrong!</p>
+    </div>
+  );
 };
 
 export default DisplayData;

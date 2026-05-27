@@ -11,6 +11,10 @@
   flex-direction: column;
 }
 
+.item-amount {
+  flex-direction: column;
+}
+
 .amount {
   font-size: 1.4rem;
 }

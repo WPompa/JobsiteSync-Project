@@ -18,12 +18,12 @@ export const POST_FIELDS = {
     { name: "TotalAvailable", label: "Available", placeholder: "total available" },
     { name: "LostAmounts", label: "Lost", placeholder: "total lost" },
   ],
-  stored_in: [
+  storedin: [
     { name: "StorageAreaID", label: "Storage Area ID", placeholder: "ex. 123", required: true },
     { name: "MaterialID", label: "Material ID", placeholder: "ex. 123", required: true },
     { name: "Amount", label: "Amount", placeholder: "ex. 10", required: true },
   ],
-  storage_areas: [
+  storageareas: [
     { name: "StorageAreaID", label: "Storage Area ID", placeholder: "ex. 123" },
     { name: "Length", label: "Inner Length", placeholder: "length feet" },
     { name: "Width", label: "Inner Width", placeholder: "width feet" },
@@ -31,7 +31,7 @@ export const POST_FIELDS = {
     { name: "Location", label: "Location", placeholder: "laydown 123", required: true },
     { name: "JobsiteID", label: "Jobsite ID", placeholder: "ex. 123" },
     { name: "TotalStored", label: "Total Stored", placeholder: "ex. 10" },
-    { name: "Is_Container", label: "Is Container?", placeholder: "yes, no" },
+    { name: "Is_Container", label: "Is Container?", placeholder: "true or false" },
   ],
   jobsites: [
     { name: "JobsiteID", label: "Jobsite ID", placeholder: "ex. 123" },
@@ -59,12 +59,12 @@ export const PUT_FIELDS = {
     { name: "TotalAvailable", label: "Available", placeholder: "ex. 50" },
     { name: "LostAmounts", label: "Lost", placeholder: "ex. 5" },
   ],
-  stored_in: [
+  storedin: [
     { name: "StorageAreaID", label: "Storage Area ID", placeholder: "ex. 55", required: true },
     { name: "MaterialID", label: "Material ID", placeholder: "ex. 101", required: true },
     { name: "Amount", label: "Amount", placeholder: "ex. 20" },
   ],
-  storage_areas: [
+  storageareas: [
     { name: "StorageAreaID", label: "Storage Area ID", placeholder: "ex. 55", required: true },
     { name: "Length", label: "Inner Length", placeholder: "feet", hasCheckbox: true },
     { name: "Width", label: "Inner Width", placeholder: "feet", hasCheckbox: true },
@@ -72,7 +72,7 @@ export const PUT_FIELDS = {
     { name: "Location", label: "Location", placeholder: "laydown 123" },
     { name: "JobsiteID", label: "Jobsite ID", placeholder: "ex. 123" },
     { name: "TotalStored", label: "Total Stored", placeholder: "ex. 100" },
-    { name: "Is_Container", label: "Is Container?", placeholder: "yes, no" },
+    { name: "Is_Container", label: "Is Container?", placeholder: "true or false" },
   ],
   jobsites: [
     { name: "JobsiteID", label: "Jobsite ID", placeholder: "ex. 123", required: true },
@@ -100,12 +100,12 @@ export const DELETE_FIELDS = {
     { name: "TotalAvailable", label: "Available", placeholder: "count, ..." },
     { name: "LostAmounts", label: "Lost", placeholder: "count, ..." },
   ],
-  stored_in: [
+  storedin: [
     { name: "StorageAreaID", label: "Storage Area ID", placeholder: "ex. 55, 66, ..." },
     { name: "MaterialID", label: "Material ID", placeholder: "ex. 101, 102, ..." },
     { name: "Amount", label: "Amount", placeholder: "ex. 10, 20, ..." },
   ],
-  storage_areas: [
+  storageareas: [
     { name: "StorageAreaID", label: "Storage Area ID", placeholder: "ex. 55, 66, ..." },
     { name: "Length", label: "Inner Length", placeholder: "feet, ..." },
     { name: "Width", label: "Inner Width", placeholder: "feet, ..." },
@@ -113,7 +113,7 @@ export const DELETE_FIELDS = {
     { name: "Location", label: "Location", placeholder: "laydown 123, ..." },
     { name: "JobsiteID", label: "Jobsite ID", placeholder: "ex. 123, ..." },
     { name: "TotalStored", label: "Total Stored", placeholder: "ex. 10, ..." },
-    { name: "Is_Container", label: "Is Container?", placeholder: "yes, no" },
+    { name: "Is_Container", label: "Is Container?", placeholder: "true or false" },
   ],
   jobsites: [
     { name: "JobsiteID", label: "Jobsite ID", placeholder: "ex. 123, 456, ..." },

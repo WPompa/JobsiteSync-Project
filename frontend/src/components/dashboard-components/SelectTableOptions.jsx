@@ -13,8 +13,8 @@ function SelectTableOptions({ setChosenTable, setHTTPBody }) {
         <option value="">None</option>
         <option value="employees">Employees</option>
         <option value="materials">Materials</option>
-        <option value="stored_in">Stored In</option>
-        <option value="storage_areas">Storage Areas</option>
+        <option value="storedin">Stored In</option>
+        <option value="storageareas">Storage Areas</option>
         <option value="jobsites">Jobsites</option>
         {/* <option value="activity_log">Activity Log</option> */}
       </select>

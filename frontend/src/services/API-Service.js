@@ -41,6 +41,13 @@ export const api = {
       ...config,
     }),
 
+  patch: (endpoint, body, config = {}) =>
+    httpFetchRequest(endpoint, {
+      method: "PATCH",
+      body: JSON.stringify(body),
+      ...config,
+    }),
+
   delete: (endpoint, body, config = {}) =>
     httpFetchRequest(endpoint, {
       method: "DELETE",

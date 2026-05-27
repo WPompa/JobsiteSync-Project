@@ -1,16 +1,16 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import DisplayData from "../components/dashboard-components/DisplayData";
 import PostForms from "../components/dashboard-components/PostForms";
 import PutForms from "../components/dashboard-components/PutForms";
 import DeleteForms from "../components/dashboard-components/DeleteForms";
-import "./css/dashboard.css";
 import CurrentPage from "../components/minor-components/CurrentPage";
 import CurrentLimit from "../components/minor-components/CurrentLimit";
 import ErrorModal from "../components/minor-components/ErrorModal";
 import Loading from "../components/dashboard-components/Loading";
 import { api } from "../services/API-Service";
 import { useDashboardParams } from "../hooks/useDashboardParams";
-
+import "./css/dashboard.css";
 export const DashboardContext = React.createContext();
 
 const DBTableNames = {
@@ -20,36 +20,18 @@ const DBTableNames = {
   "Storage Areas": "storageareas",
   Jobsites: "jobsites",
   Leadership: "leadership",
-  /* "Emp + Jobsites": "emp + jobsites",
-  "Mat. Amounts": "mat. amounts", */
-  // "Activity Log": "activity_log",
 };
 
 const Dashboard = () => {
-  const [data, setData] = useState([]);
-  const [reload, setReload] = useState(false);
+  let backgroundDivRef = useRef(false);
   const [methodOption, setMethodOption] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [modalContent, setModalContent] = useState({ title: "", body: "" });
-  const [isLoading, setIsLoading] = useState(false);
-  const [metadata, setMetadata] = useState();
-  let backgroundDivRef = useRef(false);
+  const queryClient = useQueryClient();
+  const activeTable = table === "leadership" ? "other" : table;
+  const queryString = searchParams.toString();
   const { page, limit, table, updateParams, searchParams } =
     useDashboardParams();
-
-  /////////////////////////////////////////////
-
-  useEffect(() => {
-    if (table) {
-      setIsLoading(true);
-      getData(table);
-
-      console.log("getData()");
-    } else {
-      //Remove else later
-      console.log("No table for getData()");
-    }
-  }, [table, reload, searchParams]);
 
   /////////////////////////////////////////////
 
@@ -61,34 +43,37 @@ const Dashboard = () => {
     });
   };
 
-  const getData = async (table) => {
-    if (table === "leadership") {
-      //quick work around for WIP backend setup.
-      table = "other";
-    }
-    try {
-      const data = await api.get(`${table}?${searchParams.toString()}`);
+  const {
+    data: responseData,
+    isLoading,
+    error,
+    dataUpdatedAt,
+  } = useQuery({
+    queryKey: ["dashboardData", activeTable, queryString],
+    queryFn: () => api.get(`${activeTable}?${queryString}`),
+    enabled: !!table,
+    refetchOnWindowFocus: false,
+    //refetchInterval,
+    //refetchIntervalInBackground,
+  });
 
-      setData(data);
-      setMetadata(data.pagination);
-      console.log(data); //remove later.
-      setIsLoading(false);
-    } catch (error) {
-      handleUIError(error);
-      setIsLoading(false);
-    }
-  };
+  if (error) {
+    handleUIError(error);
+  }
+
+  const data = responseData || [];
+  const metadata = responseData?.pagination;
+
+  /////////////////////////////////////////////
 
   const changeDisplayedTable = (e) => {
     let newTable = e.target.value;
 
     if (newTable) {
       backgroundDivRef.current = true;
-      setData([]);
       updateParams({ table: newTable, page: 1 });
     } else {
       backgroundDivRef.current = false;
-      setData([]);
       updateParams({ table: "" });
     }
   };
@@ -103,10 +88,9 @@ const Dashboard = () => {
     updateParams({ page: nextPage });
   };
 
-  const reloadDataContainer = (selectedTable) => {
-    if (!table || table === selectedTable) {
-      setReload((prev) => !prev);
-    }
+  const reloadDataContainer = () => {
+    queryClient.invalidateQueries({ queryKey: ["dashboardData"] });
+    console.log("reload");
   };
 
   //////////////////////////////////////////////////////////////////////////////////////////
@@ -118,7 +102,7 @@ const Dashboard = () => {
         useEmpty ? { body, table, useEmpty } : { body },
       );
 
-      reloadDataContainer(table);
+      reloadDataContainer();
       console.log(response);
     } catch (error) {
       handleUIError(error);
@@ -193,7 +177,11 @@ const Dashboard = () => {
             {isLoading ? (
               <Loading />
             ) : (
-              <DisplayData tableToDisplay={table} data={data} />
+              <DisplayData
+                tableToDisplay={table}
+                data={data}
+                dataUpdatedAt={dataUpdatedAt}
+              />
             )}
           </div>
         </div>
@@ -221,7 +209,7 @@ const Dashboard = () => {
             {methodOption === "" ? (
               <DisplayQueryButtons
                 setMethodOption={setMethodOption}
-                setReload={setReload}
+                reloadDataContainer={reloadDataContainer}
               />
             ) : (
               <div className="dashboard-form-container">
@@ -248,7 +236,7 @@ const Dashboard = () => {
   );
 };
 
-const DisplayQueryButtons = ({ setMethodOption, setReload }) => {
+const DisplayQueryButtons = ({ setMethodOption, reloadDataContainer }) => {
   return (
     <div className="dashboard-btn-container">
       <button
@@ -279,7 +267,7 @@ const DisplayQueryButtons = ({ setMethodOption, setReload }) => {
         type="button"
         className="dashboard-btn"
         id="reload-btn"
-        onClick={() => setReload((prev) => !prev)}
+        onClick={() => reloadDataContainer()}
       >
         Reload
       </button>

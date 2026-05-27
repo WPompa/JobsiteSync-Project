@@ -1,15 +1,72 @@
+import { useState } from "react";
+import { useOptimisticMutation } from "../../../hooks/useOptimisticMutation";
+import {
+  TopBottom,
+  EditTop,
+  ToggleEdit,
+} from "../../minor-components/TopBottom";
+import NoJobsiteImg from "../../../assets/NoJobsiteImg.png";
 import styles from "./css/Jobsites.module.css";
 import "./css/views.css";
-import NoJobsiteImg from "../../../assets/NoJobsiteImg.png";
-import TopBottom from "../../minor-components/TopBottom";
 
-const Jobsites = ({
-  JobsiteID,
-  Jobsite,
-  Supervisor,
-  SupervisorID,
-  img = NoJobsiteImg,
-}) => {
+const Jobsites = ({ rowData, rowIndex, tableMeta }) => {
+  const [backupData, setBackupData] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
+
+  const {
+    JobsiteID,
+    Jobsite,
+    Supervisor,
+    SupervisorID,
+    img = NoJobsiteImg,
+  } = rowData;
+
+  const { mutate } = useOptimisticMutation("jobsites", "JobsiteID");
+
+  const handleSave = () => {
+    const backup = backupData;
+
+    mutate(
+      {
+        id: JobsiteID,
+        payload: { Jobsite },
+      },
+      {
+        onSuccess: () => {
+          setIsEditing(false);
+          setBackupData(null);
+        },
+        onError: (err) => {
+          if (backup) {
+            tableMeta.revertRowData(rowIndex, backup);
+          }
+
+          setIsEditing(false);
+          setBackupData(null);
+          alert(
+            `Failed to save changes: ${err?.message || "Validation Error"}`,
+          );
+        },
+      },
+    );
+  };
+
+  const toggleEdit = () => {
+    if (!isEditing) {
+      setBackupData(JSON.parse(JSON.stringify(rowData)));
+    } else {
+      if (backupData) {
+        tableMeta.revertRowData(rowIndex, backupData);
+      }
+    }
+
+    setIsEditing((prev) => !prev);
+  };
+
+  const handleInputChange = (columnKey, value) => {
+    tableMeta.updateRowField(rowIndex, columnKey, value);
+  };
+
   return (
     <div className={`views-common ${styles["jobsites-container"]}`}>
       <div className={`grid-item item-img-id ${styles["item-img-id"]}`}>
@@ -22,6 +79,12 @@ const Jobsites = ({
         </div>
 
         <p className="data-id">ID: {JobsiteID}</p>
+
+        <ToggleEdit
+          isEditing={isEditing}
+          toggleEdit={toggleEdit}
+          handleSave={handleSave}
+        />
       </div>
 
       <div className={`grid-item ${styles["item-divider"]}`}>
@@ -29,11 +92,20 @@ const Jobsites = ({
       </div>
 
       <div className={`grid-item ${styles["item-jobsite-super"]}`}>
-        <TopBottom
-          top={Jobsite}
-          bottom={"JOBSITE"}
-          altClass={styles["jobsite-name"]}
-        />
+        {isEditing ? (
+          <EditTop
+            value={Jobsite}
+            columnKey="Jobsite"
+            placeholder="Jobsite Name"
+            handleChange={handleInputChange}
+          />
+        ) : (
+          <TopBottom
+            top={Jobsite}
+            bottom={"JOBSITE"}
+            altClass={styles["jobsite-name"]}
+          />
+        )}
 
         <TopBottom
           top={Supervisor}
