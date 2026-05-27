@@ -27,12 +27,11 @@ const Dashboard = () => {
   const [methodOption, setMethodOption] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [modalContent, setModalContent] = useState({ title: "", body: "" });
-  const queryClient = useQueryClient();
-  const activeTable = table === "leadership" ? "other" : table;
-  const queryString = searchParams.toString();
   const { page, limit, table, updateParams, searchParams } =
     useDashboardParams();
-
+  const queryClient = useQueryClient();
+  const queryString = searchParams.toString();
+  const activeTable = table === "leadership" ? "other" : table;
   /////////////////////////////////////////////
 
   const handleUIError = (error) => {
