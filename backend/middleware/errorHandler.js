@@ -14,13 +14,24 @@ const errorHandler = (err, req, res, next) => {
 
   if (err.name.includes("Sequelize")) {
     console.error("Sequelize Error: ", err.name);
-    console.error("Errors: ", err?.errors); //Look into this line. Just gives undefined.
-    console.error("Message: ", err?.parent?.sqlMessage);
-    console.error("Stack: ", err.stack);
+    console.error("Error Message: ", err?.parent?.sqlMessage || err.message);
+    console.error("Errors: ", err?.errors);
 
+    let cleanUserMessage = "A database tracking error occurred.";
+
+    if (err.errors && Array.isArray(err.errors) && err.errors.length > 0) {
+      if (err.name === "SequelizeUniqueConstraintError") {
+        cleanUserMessage = `${err.errors[0].path} is already taken. Please try another value.`;
+      } else {
+        cleanUserMessage = err.errors.map((error) => error.message).join("\n");
+
+        // Alternative layout: "Email is invalid. Password is too short."
+        // cleanUserMessage = err.errors.map(error => error.message).join(". ");
+      }
+    }
     return res.status(400).json({
       status: "error",
-      message: "Internal Sequelize Error", //err.message, //Prone to oversharing. Needs Rework.
+      message: cleanUserMessage,
       stack: undefined,
     });
   }
