@@ -98,6 +98,19 @@ function SwipeableToast({ toast, onDismiss }) {
           ? "none"
           : "transform 0.2s ease, opacity 0.2s ease",
       };
+  const toastRef = useRef(null);
+
+  useEffect(() => {
+    const element = toastRef.current;
+
+    if (!element) return;
+
+    const handleMove = (e) => handleTouchMove(e);
+
+    element.addEventListener("touchmove", handleMove, { passive: false });
+
+    return () => element.removeEventListener("touchmove", handleMove);
+  }, [isDragging, dragX, toast.isExiting]);
 
   const handleTouchStart = (e) => {
     if (toast.isExiting) return;
@@ -110,6 +123,10 @@ function SwipeableToast({ toast, onDismiss }) {
   const handleTouchMove = (e) => {
     if (!isDragging || toast.isExiting) return;
 
+    if (e.cancelable) {
+      e.preventDefault();
+    }
+
     const currentX = e.touches[0].clientX;
     const diffX = currentX - startingX.current;
 
@@ -120,6 +137,7 @@ function SwipeableToast({ toast, onDismiss }) {
 
   const handleTouchEnd = () => {
     setIsDragging(false);
+
     if (dragX > SWIPE_THRESHOLD) {
       onDismiss();
     } else {
@@ -131,8 +149,8 @@ function SwipeableToast({ toast, onDismiss }) {
     <div
       className={`toast-message toast-${toast.type} ${toast.isExiting ? "toast-exit" : ""}`}
       role="alert"
+      ref={toastRef}
       onTouchStart={handleTouchStart}
-      onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
       style={swipeStyle}
     >
