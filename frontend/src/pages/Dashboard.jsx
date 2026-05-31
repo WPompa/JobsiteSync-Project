@@ -33,14 +33,15 @@ const Dashboard = () => {
   const queryString = searchParams.toString();
   const activeTable = table === "leadership" ? "other" : table;
   /////////////////////////////////////////////
-
-  const handleUIError = (error) => {
+  // May be useful later.
+  /* const handleUIError = (error) => {
+    
     setShowModal(true);
     setModalContent({
       title: error.status || "Missing Error Status",
       body: error.message || "Missing Error Message.",
-    });
-  };
+    }); 
+  }; */
 
   const {
     data: responseData,
@@ -49,16 +50,13 @@ const Dashboard = () => {
     dataUpdatedAt,
   } = useQuery({
     queryKey: ["dashboardData", activeTable, queryString],
-    queryFn: () => api.get(`${activeTable}?${queryString}`),
+    queryFn: () =>
+      api.get(`${activeTable}?${queryString}`, { skipGlobalToast: true }),
     enabled: !!table,
     refetchOnWindowFocus: false,
     //refetchInterval,
     //refetchIntervalInBackground,
   });
-
-  if (error) {
-    handleUIError(error);
-  }
 
   const data = responseData || [];
   const metadata = responseData?.pagination;
@@ -89,7 +87,6 @@ const Dashboard = () => {
 
   const reloadDataContainer = () => {
     queryClient.invalidateQueries({ queryKey: ["dashboardData"] });
-    console.log("reload");
   };
 
   //////////////////////////////////////////////////////////////////////////////////////////
@@ -104,20 +101,20 @@ const Dashboard = () => {
       reloadDataContainer();
       console.log(response);
     } catch (error) {
-      handleUIError(error);
+      console.error("Method execution aborted:", error);
     }
   };
 
   const postMethod = async (postBody, table) => {
-    methodHelper(postBody, table, api.post);
+    await methodHelper(postBody, table, api.post);
   };
 
   const deleteMethod = async (deleteBody, table) => {
-    methodHelper(deleteBody, table, api.delete);
+    await methodHelper(deleteBody, table, api.delete);
   };
 
   const putMethod = async (putBody, table, useEmpty) => {
-    methodHelper(putBody, table, api.put, useEmpty);
+    await methodHelper(putBody, table, api.put, useEmpty);
   };
 
   //////////////////////////////////////////////////////////////////////////////////////////

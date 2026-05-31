@@ -13,7 +13,7 @@ const getEmployees = asyncWrapper(async (req, res, next) => {
     limit,
   );
 
-  res.status(200).json({ status: "Success!", result, pagination: metadata });
+  res.status(200).json({ status: "success", result, pagination: metadata });
 });
 
 const createEmployee = asyncWrapper(async (req, res, next) => {
@@ -23,7 +23,9 @@ const createEmployee = asyncWrapper(async (req, res, next) => {
   const result = await service.createEmployee(employees, body);
 
   //console.log(JSON.stringify(result));
-  res.status(201).json({ status: "Success!", result });
+  res
+    .status(201)
+    .json({ status: "success", result, message: "Employee Created!" });
 });
 
 const updateEmployees = asyncWrapper(async (req, res, next) => {
@@ -37,7 +39,9 @@ const updateEmployees = asyncWrapper(async (req, res, next) => {
     return res.status(204).send();
   }
 
-  res.status(200).json({ status: "Success!", result });
+  res
+    .status(200)
+    .json({ status: "success", result, message: "Employee(s) Updated!" });
 });
 
 const patchEmployee = asyncWrapper(async (req, res, next) => {
@@ -46,7 +50,9 @@ const patchEmployee = asyncWrapper(async (req, res, next) => {
 
   const result = await service.patchEmployee(employees, id, req.body);
 
-  res.status(200).json({ status: "Success!", result });
+  res
+    .status(200)
+    .json({ status: "success", result, message: "Employee Updated!" });
 });
 
 const deleteEmployees = asyncWrapper(async (req, res, next) => {
@@ -55,7 +61,9 @@ const deleteEmployees = asyncWrapper(async (req, res, next) => {
 
   const result = await service.deleteEmployees(employees, body);
 
-  res.status(200).json({ status: "Success!", result });
+  res
+    .status(200)
+    .json({ status: "success", result, message: "Employee(s) Deleted!" });
 });
 
 module.exports = {

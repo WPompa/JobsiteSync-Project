@@ -11,7 +11,7 @@ const getMaterials = asyncWrapper(async (req, res, next) => {
     limit,
   );
 
-  res.status(200).json({ status: "Success!", result, pagination: metadata });
+  res.status(200).json({ status: "success", result, pagination: metadata });
 });
 
 const createMaterial = asyncWrapper(async (req, res, next) => {
@@ -20,7 +20,9 @@ const createMaterial = asyncWrapper(async (req, res, next) => {
 
   const result = await service.createMaterial(materials, body);
 
-  res.status(201).json({ status: "Success!", result });
+  res
+    .status(201)
+    .json({ status: "success", result, message: "Material Created!" });
 });
 
 const updateMaterials = asyncWrapper(async (req, res, next) => {
@@ -33,7 +35,9 @@ const updateMaterials = asyncWrapper(async (req, res, next) => {
     return res.status(204).send();
   }
 
-  res.status(200).json({ status: "Success!", result });
+  res
+    .status(200)
+    .json({ status: "success", result, message: "Material(s) Updated!" });
 });
 
 const patchMaterial = asyncWrapper(async (req, res, next) => {
@@ -42,7 +46,9 @@ const patchMaterial = asyncWrapper(async (req, res, next) => {
 
   const result = await service.patchMaterial(materials, id, req.body);
 
-  res.status(200).json({ status: "Success!", result });
+  res
+    .status(200)
+    .json({ status: "success", result, message: "Material Updated!" });
 });
 
 const deleteMaterials = asyncWrapper(async (req, res, next) => {
@@ -51,7 +57,9 @@ const deleteMaterials = asyncWrapper(async (req, res, next) => {
 
   const result = await service.deleteMaterials(materials, body);
 
-  res.status(200).json({ status: "Success!", result });
+  res
+    .status(200)
+    .json({ status: "success", result, message: "Material(s) Deleted!" });
 });
 
 module.exports = {

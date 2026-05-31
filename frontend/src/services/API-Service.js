@@ -1,3 +1,5 @@
+import { toastEvents } from "../utils/toastEvents";
+
 const BASE_URL = new URL(import.meta.env.VITE_API_URL);
 
 export const httpFetchRequest = async (endpoint, options = {}) => {
@@ -10,16 +12,36 @@ export const httpFetchRequest = async (endpoint, options = {}) => {
     ...options.headers,
   };
 
-  const response = await fetch(`${API_URL}`, {
-    ...options,
-    headers,
-  });
+  try {
+    const response = await fetch(`${API_URL}`, {
+      ...options,
+      headers,
+    });
 
-  const data = await response.json();
+    const data = await response.json();
 
-  if (data.status !== "Success!") throw data;
+    if (data.status !== "success") {
+      if (!options?.skipGlobalToast) {
+        toastEvents.emit(
+          data?.message || "An Error Occurred!",
+          data?.status || "error",
+        );
+      }
 
-  return data;
+      throw data;
+    }
+
+    if (!options?.skipGlobalToast) {
+      toastEvents.emit(
+        data?.message || "Request Was Successful!",
+        data?.status || "success",
+      );
+    }
+
+    return data;
+  } catch (error) {
+    throw error;
+  }
 };
 
 ////////////////////////////////////////////

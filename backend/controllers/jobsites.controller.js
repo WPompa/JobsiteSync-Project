@@ -13,7 +13,7 @@ const getJobsites = asyncWrapper(async (req, res, next) => {
     limit,
   );
 
-  res.status(200).json({ status: "Success!", result, pagination: metadata });
+  res.status(200).json({ status: "success", result, pagination: metadata });
 });
 
 const createJobsite = asyncWrapper(async (req, res, next) => {
@@ -22,7 +22,9 @@ const createJobsite = asyncWrapper(async (req, res, next) => {
 
   const result = await service.createJobsite(jobsites, body);
 
-  res.status(201).json({ status: "Success!", result });
+  res
+    .status(201)
+    .json({ status: "success", result, message: "Jobsite Created!" });
 });
 
 const updateJobsites = asyncWrapper(async (req, res, next) => {
@@ -35,7 +37,9 @@ const updateJobsites = asyncWrapper(async (req, res, next) => {
     return res.status(204).send();
   }
 
-  res.status(200).json({ status: "Success!", result });
+  res
+    .status(200)
+    .json({ status: "success", result, message: "Jobsite(s) Updated!" });
 });
 
 const patchJobsite = asyncWrapper(async (req, res, next) => {
@@ -44,7 +48,9 @@ const patchJobsite = asyncWrapper(async (req, res, next) => {
 
   const result = await service.patchJobsite(jobsites, id, req.body);
 
-  res.status(200).json({ status: "Success!", result });
+  res
+    .status(200)
+    .json({ status: "success", result, message: "Jobsite Updated!" });
 });
 
 const deleteJobsites = asyncWrapper(async (req, res, next) => {
@@ -53,7 +59,9 @@ const deleteJobsites = asyncWrapper(async (req, res, next) => {
 
   const result = await service.deleteJobsites(jobsites, body);
 
-  res.status(200).json({ status: "Success!", result });
+  res
+    .status(200)
+    .json({ status: "success", result, message: "Jobsite(s) Deleted!" });
 });
 
 module.exports = {

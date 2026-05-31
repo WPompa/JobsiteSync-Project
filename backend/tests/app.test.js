@@ -102,7 +102,7 @@ describe("Global API Lifecycle Integration Suite", () => {
           `${BASE_ROUTE}${routeEndpoint}`,
           putTestData[OptionOne],
         ).expect(200);
-        expect(response.body).toHaveProperty("status", "Success!");
+        expect(response.body).toHaveProperty("status", "success");
         console.log(
           `📝 [STAGE 2 SUCCESS] ---> ${modelName} fields updated and verified via ${method.toUpperCase()}.`,
         );

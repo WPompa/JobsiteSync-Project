@@ -6,7 +6,7 @@ const errorHandler = (err, req, res, next) => {
     console.error("AppError: ", err.message); // comment out when testing
 
     return res.status(err.statusCode).json({
-      status: "Failure!",
+      status: "error",
       message: err.message,
       stack: process.env.NODE_ENV === "development" ? err.stack : undefined,
     });

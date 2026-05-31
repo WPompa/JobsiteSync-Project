@@ -21,11 +21,11 @@ const login = async (sequelize, username, password) => {
       },
     );
 
-    return { status: "Success!", result: true, token };
+    return { status: "success", result: true, token };
   }
 
   if (result.length !== 1) {
-    return { status: "Failure!", result: false, token: null };
+    return { status: "error", result: false, token: null };
   }
 
   const user = result[0];
@@ -38,7 +38,7 @@ const login = async (sequelize, username, password) => {
     },
   );
 
-  return { status: "Success!", result: true, token };
+  return { status: "success", result: true, token };
 };
 
 module.exports = login;

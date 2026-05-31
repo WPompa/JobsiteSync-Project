@@ -13,7 +13,7 @@ const getStored_In = asyncWrapper(async (req, res, next) => {
     limit,
   );
 
-  res.status(200).json({ status: "Success!", result, pagination: metadata });
+  res.status(200).json({ status: "success", result, pagination: metadata });
 });
 
 const createStored_In = asyncWrapper(async (req, res, next) => {
@@ -22,7 +22,9 @@ const createStored_In = asyncWrapper(async (req, res, next) => {
 
   const result = await service.createStored_In(stored_in, body);
 
-  res.status(201).json({ status: "Success!", result });
+  res
+    .status(201)
+    .json({ status: "success", result, message: "Stored In Created!" });
 });
 
 const updateStored_In = asyncWrapper(async (req, res, next) => {
@@ -35,7 +37,9 @@ const updateStored_In = asyncWrapper(async (req, res, next) => {
     return res.status(204).send();
   }
 
-  res.status(200).json({ status: "Success!", result });
+  res
+    .status(200)
+    .json({ status: "success", result, message: "Stored In(s) Updated!" });
 });
 
 const patchStored_In = asyncWrapper(async (req, res, next) => {
@@ -43,7 +47,9 @@ const patchStored_In = asyncWrapper(async (req, res, next) => {
 
   const result = await service.patchStored_In(stored_in, req.query, req.body);
 
-  res.status(200).json({ status: "Success!", result });
+  res
+    .status(200)
+    .json({ status: "success", result, message: "Stored In Updated!" });
 });
 
 const deleteStored_In = asyncWrapper(async (req, res, next) => {
@@ -52,7 +58,9 @@ const deleteStored_In = asyncWrapper(async (req, res, next) => {
 
   const result = await service.deleteStored_In(stored_in, body);
 
-  res.status(200).json({ status: "Success!", result });
+  res
+    .status(200)
+    .json({ status: "success", result, message: "Stored In(s) Deleted!" });
 });
 
 module.exports = {

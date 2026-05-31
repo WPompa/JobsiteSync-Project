@@ -7,7 +7,7 @@ const getOther = asyncWrapper(async (req, res, next) => {
 
   const { result, metadata } = await service(sequelize, table, page, limit);
 
-  res.status(200).json({ status: "Success!", result, pagination: metadata });
+  res.status(200).json({ status: "success", result, pagination: metadata });
 });
 
 module.exports = getOther;

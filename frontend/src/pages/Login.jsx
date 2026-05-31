@@ -23,30 +23,35 @@ const Login = ({ setUser }) => {
     e?.preventDefault();
 
     if (!login.username && !login.password) {
-      setError("Please fill out Username and Password.");
+      setError("Please fill out Username and Password");
       return;
     } else if (!login.username) {
-      setError("Please fill out Username.");
+      setError("Please fill out Username");
       return;
     } else if (!login.password) {
-      setError("Please fill out Password.");
+      setError("Please fill out Password");
       return;
     }
 
     setIsLoading(true);
 
     try {
-      const response = await api.post("login", { login });
+      const response = await api.post(
+        "login",
+        { login },
+        { skipGlobalToast: true },
+      );
+
       if (response.result) {
         localStorage.setItem("token", response.token);
         setUser({ username: login.username });
         navigate("/Dashboard");
       } else {
         localStorage.removeItem("token");
-        setError("Invalid username or password.");
+        setError("Invalid username or password");
       }
     } catch (error) {
-      setError(`${error?.message || "Unknown Error."}`);
+      setError(`${error?.message || "Unknown Error"}`);
     } finally {
       setIsLoading(false);
     }

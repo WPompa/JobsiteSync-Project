@@ -13,7 +13,7 @@ const getStorage_Areas = asyncWrapper(async (req, res, next) => {
     limit,
   );
 
-  res.status(200).json({ status: "Success!", result, pagination: metadata });
+  res.status(200).json({ status: "success", result, pagination: metadata });
 });
 
 const createStorage_Area = asyncWrapper(async (req, res, next) => {
@@ -23,7 +23,9 @@ const createStorage_Area = asyncWrapper(async (req, res, next) => {
   const result = await service.createStorage_Area(storage_areas, body);
 
   //console.log(JSON.stringify(result));
-  res.status(201).json({ status: "Success!", result });
+  res
+    .status(201)
+    .json({ status: "success", result, message: "Storage Area Created!" });
 });
 
 const updateStorage_Areas = asyncWrapper(async (req, res, next) => {
@@ -40,7 +42,9 @@ const updateStorage_Areas = asyncWrapper(async (req, res, next) => {
     return res.status(204).send();
   }
 
-  res.status(200).json({ status: "Success!", result });
+  res
+    .status(200)
+    .json({ status: "success", result, message: "Storage Area(s) Updated!" });
 });
 
 const patchStorage_Area = asyncWrapper(async (req, res, next) => {
@@ -49,7 +53,9 @@ const patchStorage_Area = asyncWrapper(async (req, res, next) => {
 
   const result = await service.patchStorage_Area(storage_areas, id, req.body);
 
-  res.status(200).json({ status: "Success!", result });
+  res
+    .status(200)
+    .json({ status: "success", result, message: "Storage Area Updated!" });
 });
 
 const deleteStorage_Areas = asyncWrapper(async (req, res, next) => {
@@ -58,7 +64,9 @@ const deleteStorage_Areas = asyncWrapper(async (req, res, next) => {
 
   const result = await service.deleteStorage_Areas(storage_areas, body);
 
-  res.status(200).json({ status: "Success!", result });
+  res
+    .status(200)
+    .json({ status: "success", result, message: "Storage Area(s) Deleted!" });
 });
 
 module.exports = {

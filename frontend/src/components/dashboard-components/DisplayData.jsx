@@ -27,7 +27,7 @@ const DisplayData = ({ tableToDisplay, data, dataUpdatedAt }) => {
 
   const CurrentView = viewMap[tableToDisplay];
 
-  if (CurrentView && data?.status === "Success!") {
+  if (CurrentView && data?.status === "success") {
     if (!data.result || data.result.length === 0) {
       return (
         <div className="display-message">
