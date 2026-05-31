@@ -106,8 +106,6 @@ function SwipeableToast({ toast, onDismiss }) {
         e.preventDefault();
       }
 
-      console.log("dragging");
-
       const currentX = e.touches[0].clientX;
       const diffX = currentX - startingX.current;
 
@@ -149,18 +147,24 @@ function SwipeableToast({ toast, onDismiss }) {
 
   return (
     <div
-      className={`toast-message toast-${toast.type} ${toast.isExiting ? "toast-exit" : ""}`}
-      role="alert"
+      className={`toast-wrapper ${toast.isExiting ? "toast-exit" : ""}`}
       ref={elementRef}
-      onTouchStart={handleTouchStart}
-      onTouchEnd={handleTouchEnd}
-      style={swipeStyle}
     >
-      <span className="toast-icon">{toast.type === "error" ? "❌" : "✅"}</span>
-      <p className="toast-text">{toast.message}</p>
-      <button className="toast-close" onClick={onDismiss} aria-label="Close">
-        ×
-      </button>
+      <div
+        className={`toast-message toast-${toast.type}`}
+        role="alert"
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+        style={swipeStyle}
+      >
+        <span className="toast-icon">
+          {toast.type === "error" ? "❌" : "✅"}
+        </span>
+        <p className="toast-text">{toast.message}</p>
+        <button className="toast-close" onClick={onDismiss} aria-label="Close">
+          ×
+        </button>
+      </div>
     </div>
   );
 }
