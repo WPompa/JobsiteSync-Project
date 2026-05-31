@@ -19,7 +19,7 @@ const errorHandler = (err, req, res, next) => {
     console.error("Stack: ", err.stack);
 
     return res.status(400).json({
-      status: "Error",
+      status: "error",
       message: "Internal Sequelize Error", //err.message, //Prone to oversharing. Needs Rework.
       stack: undefined,
     });
@@ -29,7 +29,7 @@ const errorHandler = (err, req, res, next) => {
   //console.log(JSON.stringify(err, null, 2));
 
   return res.status(500).json({
-    status: "Error",
+    status: "error",
     message: "Internal Server Error",
     stack: undefined,
   });
