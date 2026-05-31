@@ -48,6 +48,7 @@
   margin: 0;
   font-size: 0.85rem;
   font-weight: 500;
+  white-space: pre-line;
   flex-grow: 1;
 }
 .toast-close {

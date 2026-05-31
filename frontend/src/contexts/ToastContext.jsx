@@ -89,28 +89,6 @@ function SwipeableToast({ toast, onDismiss }) {
   const [dragX, setDragX] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const startingX = useRef(0);
-  const swipeStyle = toast.isExiting
-    ? undefined
-    : {
-        transform: `translateX(${dragX}px)`,
-        opacity: 1 - dragX / 200,
-        transition: isDragging
-          ? "none"
-          : "transform 0.2s ease, opacity 0.2s ease",
-      };
-  const toastRef = useRef(null);
-
-  useEffect(() => {
-    const element = toastRef.current;
-
-    if (!element) return;
-
-    const handleMove = (e) => handleTouchMove(e);
-
-    element.addEventListener("touchmove", handleMove, { passive: false });
-
-    return () => element.removeEventListener("touchmove", handleMove);
-  }, [isDragging, dragX, toast.isExiting]);
 
   const handleTouchStart = (e) => {
     if (toast.isExiting) return;
@@ -120,20 +98,25 @@ function SwipeableToast({ toast, onDismiss }) {
     setIsDragging(true);
   };
 
-  const handleTouchMove = (e) => {
-    if (!isDragging || toast.isExiting) return;
+  const handleTouchMove = useCallback(
+    (e) => {
+      if (!isDragging || toast.isExiting) return;
 
-    if (e.cancelable) {
-      e.preventDefault();
-    }
+      if (e.cancelable) {
+        e.preventDefault();
+      }
 
-    const currentX = e.touches[0].clientX;
-    const diffX = currentX - startingX.current;
+      console.log("dragging");
 
-    if (diffX > 0) {
-      setDragX(diffX);
-    }
-  };
+      const currentX = e.touches[0].clientX;
+      const diffX = currentX - startingX.current;
+
+      if (diffX > 0) {
+        setDragX(diffX);
+      }
+    },
+    [isDragging, toast.isExiting],
+  );
 
   const handleTouchEnd = () => {
     setIsDragging(false);
@@ -145,11 +128,30 @@ function SwipeableToast({ toast, onDismiss }) {
     }
   };
 
+  const elementRef = useCallback(
+    (node) => {
+      if (node !== null) {
+        node.addEventListener("touchmove", handleTouchMove, { passive: false });
+      }
+    },
+    [handleTouchMove],
+  );
+
+  const swipeStyle = toast.isExiting
+    ? undefined
+    : {
+        transform: `translateX(${dragX}px)`,
+        opacity: 1 - dragX / 200,
+        transition: isDragging
+          ? "none"
+          : "transform 0.2s ease, opacity 0.2s ease",
+      };
+
   return (
     <div
       className={`toast-message toast-${toast.type} ${toast.isExiting ? "toast-exit" : ""}`}
       role="alert"
-      ref={toastRef}
+      ref={elementRef}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
       style={swipeStyle}
