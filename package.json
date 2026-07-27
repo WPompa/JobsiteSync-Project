@@ -1,0 +1,14 @@
+{
+  "name": "jobsitesync-project",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Monorepo workspace controller for the JobsiteSync project.",
+  "scripts": {
+    "install-all": "npm install --prefix frontend && npm install --prefix backend",
+    "dev": "concurrently \"npm run dev --prefix frontend\" \"npm run start --prefix backend\"",
+    "test": "npm run test --prefix backend"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
