@@ -118,6 +118,8 @@ const setDeleteOptions = (
     const totalRowsToClear = criteria[sampleKey]?.length || 0;
     const rowMatchClauses = [];
 
+    matchesProtectedValues(criteria, keysToProtect, immutableData);
+
     // Pair up coordinates by index to build isolated exact row matches
     // [{StorageAreaID: 1, MaterialID:1}, {...}, ...]
     for (let i = 0; i < totalRowsToClear; i++) {
@@ -157,6 +159,8 @@ const setDeleteOptions = (
   const [currentKey] = Object.keys(keyValueObj);
   const targetValues = keyValueObj[currentKey];
 
+  matchesProtectedValues(keyValueObj, keysToProtect, immutableData);
+
   const matchCondition = { [currentKey]: { [Op.in]: targetValues } };
   const protectionClauses = [];
 
@@ -177,6 +181,23 @@ const setDeleteOptions = (
   options = matchCondition;
 
   return options;
+};
+
+const matchesProtectedValues = (criteria, keysToProtect, immutableData) => {
+  for (const key of keysToProtect) {
+    if (immutableData[key] !== undefined && criteria[key]) {
+      const targetsProtectedValue = criteria[key].some((val) => {
+        return Number(val) === immutableData[key];
+      });
+
+      if (targetsProtectedValue) {
+        throw new AppError(
+          `Cannot delete protected records. One or more values are protected.`,
+          403,
+        );
+      }
+    }
+  }
 };
 
 // This function is just to always have example data during a live showcase.

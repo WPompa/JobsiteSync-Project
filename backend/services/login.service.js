@@ -3,14 +3,14 @@ const { QueryTypes } = require("sequelize");
 
 const login = async (sequelize, username, password) => {
   const result = await sequelize.query(
-    `SELECT AccountID, Username, Password FROM credentials WHERE username = :username AND password = :password`,
+    `SELECT AccountID, Username FROM credentials WHERE username = :username AND password = :password`,
     {
       replacements: { username, password },
       type: QueryTypes.SELECT,
     },
   );
 
-  console.log(username + password);
+  //console.log(username + password); // Only for debugging purposes.
 
   if (username === "Guest" && password === "password") {
     const token = jwt.sign(
