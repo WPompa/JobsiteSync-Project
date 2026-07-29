@@ -1,6 +1,6 @@
 import { useState, useContext } from "react";
 import { useNavigate, Navigate } from "react-router-dom";
-import { useToast } from "@contexts/toastContext";
+import { useToast } from "@contexts/ToastContext";
 import { UserContext } from "../App";
 import { api } from "../services/API-Service";
 import cog from "../assets/SVG/cog.svg";
