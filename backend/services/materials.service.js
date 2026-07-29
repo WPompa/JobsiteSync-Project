@@ -1,4 +1,5 @@
 const { AppError } = require("../utils/AppError");
+const { createActivity_Log } = require("./activity_logs.service");
 const getPagination = require("../utils/paginationHelper");
 const {
   checkForRequiredValues,
@@ -40,14 +41,19 @@ const getMaterials = async (materialModel, currentPage, currentLimit) => {
   });
 
   //If pagination works as intended this snippet might never be used.
-  if (result.length === 0) {
-    throw new AppError("No Data For Selected Page", 200);
+  if (!result || result.length === 0) {
+    throw new AppError("No Data For Selected Page", 404);
   }
 
   return { result, metadata };
 };
 
-const createMaterial = async (materialModel, materialData) => {
+const createMaterial = async (
+  materialModel,
+  activity_logsModel,
+  materialData,
+  user,
+) => {
   const required = ["Name", "MaterialType", "SupplierName"];
 
   checkForRequiredValues(required, materialData);
@@ -71,16 +77,40 @@ const createMaterial = async (materialModel, materialData) => {
       );
     }
 
+    await createActivity_Log(activity_logsModel, {
+      ActionType: "CREATE",
+      MaterialName: `${materialData.MaterialName}-${materialData.MaterialID}`,
+      StorageLocation: "",
+      JobsiteName: "",
+      QuantityChanged: 0,
+      HandledBy: `${user?.username || "NO USERNAME"}-${user?.AccountID || "NO ID"}`,
+    });
+
     return instanceObj.get({ plain: true });
   }
 
   const result = await materialModel.create(materialData); //{fields: []} to exclude injected key-values.
 
+  await createActivity_Log(activity_logsModel, {
+    ActionType: "CREATE",
+    MaterialName: `${result.MaterialName}-${result.MaterialID}`,
+    StorageLocation: "",
+    JobsiteName: "",
+    QuantityChanged: 0,
+    HandledBy: `${user?.username || "NO USERNAME"}-${user?.AccountID || "NO ID"}`,
+  });
+
   return result.get({ plain: true });
 };
 
 //useEmpty is an object with booleans used for flagging values that should be set to null.
-const updateMaterials = async (materialModel, materialData, useEmpty) => {
+const updateMaterials = async (
+  materialModel,
+  activity_logsModel,
+  materialData,
+  useEmpty,
+  user,
+) => {
   const required = ["MaterialID"];
 
   checkForRequiredValues(required, materialData);
@@ -117,14 +147,42 @@ const updateMaterials = async (materialModel, materialData, useEmpty) => {
     );
   }
 
-  if (updatedRows.length >= 50) {
+  if (updatedRows.length >= 25) {
+    await createActivity_Log(activity_logsModel, {
+      ActionType: "UPDATE",
+      MaterialName: "Many Materials",
+      StorageLocation: "",
+      JobsiteName: "",
+      QuantityChanged: updatedRows.length,
+      HandledBy: `${user?.username || "NO USERNAME"}-${user?.AccountID || "NO ID"}`,
+    });
+
     return null;
   }
+
+  const promisesArr = updatedRows.map((row) =>
+    createActivity_Log(activity_logsModel, {
+      ActionType: "UPDATE",
+      MaterialName: `${row.MaterialName}-${row.MaterialID}`,
+      StorageLocation: "",
+      JobsiteName: "",
+      QuantityChanged: 0,
+      HandledBy: `${user?.username || "NO USERNAME"}-${user?.AccountID || "NO ID"}`,
+    }),
+  );
+
+  await Promise.all(promisesArr);
 
   return updatedRows;
 };
 
-const patchMaterial = async (materialModel, MaterialID, patchData) => {
+const patchMaterial = async (
+  materialModel,
+  activity_logsModel,
+  MaterialID,
+  patchData,
+  user,
+) => {
   delete patchData.MaterialID;
 
   if (!patchData || Object.keys(patchData).length === 0) {
@@ -146,6 +204,15 @@ const patchMaterial = async (materialModel, MaterialID, patchData) => {
   if (result[0] > 0) {
     const updatedRow = await materialModel.findOne({ where: { MaterialID } });
 
+    await createActivity_Log(activity_logsModel, {
+      ActionType: "PATCH",
+      MaterialName: `${updatedRow.MaterialName}-${updatedRow.MaterialID}`,
+      StorageLocation: "",
+      JobsiteName: "",
+      QuantityChanged: 0,
+      HandledBy: `${user?.username || "NO USERNAME"}-${user?.AccountID || "NO ID"}`,
+    });
+
     return updatedRow.get({ plain: true });
   }
 
@@ -158,7 +225,12 @@ const patchMaterial = async (materialModel, MaterialID, patchData) => {
   return existingRow.get({ plain: true });
 };
 
-const deleteMaterials = async (materialModel, materialData) => {
+const deleteMaterials = async (
+  materialModel,
+  activity_logsModel,
+  materialData,
+  user,
+) => {
   removeEmptyValues(materialData);
 
   const keyValuesArr = processKeyValues(
@@ -182,6 +254,37 @@ const deleteMaterials = async (materialModel, materialData) => {
   if (result === 0) {
     throw new AppError("No matching records found to delete.", 404);
   }
+
+  const materials =
+    keyValuesArr.find((obj) => obj.MaterialID)?.MaterialID || [];
+  const totalItems = materials.length;
+  const promisesArr = [];
+
+  if (result >= 25) {
+    createActivity_Log(activity_logsModel, {
+      ActionType: "DELETE",
+      MaterialName: "Many Materials",
+      StorageLocation: "",
+      JobsiteName: "",
+      QuantityChanged: result,
+      HandledBy: `${user?.username || "NO USERNAME"}-${user?.AccountID || "NO ID"}`,
+    });
+  } else {
+    for (let i = 0; i < totalItems; i++) {
+      promisesArr.push(
+        createActivity_Log(activity_logsModel, {
+          ActionType: "DELETE",
+          MaterialName: materials[i] || "NO ID",
+          StorageLocation: "",
+          JobsiteName: "",
+          QuantityChanged: 0,
+          HandledBy: `${user?.username || "NO USERNAME"}-${user?.AccountID || "NO ID"}`,
+        }),
+      );
+    }
+  }
+
+  await Promise.all(promisesArr);
 
   return {
     deletedRows: result,

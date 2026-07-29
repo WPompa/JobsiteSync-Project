@@ -18,9 +18,14 @@ const getStored_In = asyncWrapper(async (req, res, next) => {
 
 const createStored_In = asyncWrapper(async (req, res, next) => {
   const { body } = req.body;
-  const { stored_in } = req.models;
+  const { stored_in, activity_logs } = req.models;
 
-  const result = await service.createStored_In(stored_in, body);
+  const result = await service.createStored_In(
+    stored_in,
+    activity_logs,
+    body,
+    req.user,
+  );
 
   res
     .status(201)
@@ -29,9 +34,15 @@ const createStored_In = asyncWrapper(async (req, res, next) => {
 
 const updateStored_In = asyncWrapper(async (req, res, next) => {
   const { body, useEmpty } = req.body;
-  const { stored_in } = req.models;
+  const { stored_in, activity_logs } = req.models;
 
-  const result = await service.updateStored_In(stored_in, body, useEmpty);
+  const result = await service.updateStored_In(
+    stored_in,
+    activity_logs,
+    body,
+    useEmpty,
+    req.user,
+  );
 
   if (result === null) {
     return res.status(204).send();
@@ -43,9 +54,15 @@ const updateStored_In = asyncWrapper(async (req, res, next) => {
 });
 
 const patchStored_In = asyncWrapper(async (req, res, next) => {
-  const { stored_in } = req.models;
+  const { stored_in, activity_logs } = req.models;
 
-  const result = await service.patchStored_In(stored_in, req.query, req.body);
+  const result = await service.patchStored_In(
+    stored_in,
+    activity_logs,
+    req.query,
+    req.body,
+    req.user,
+  );
 
   res
     .status(200)
@@ -54,9 +71,14 @@ const patchStored_In = asyncWrapper(async (req, res, next) => {
 
 const deleteStored_In = asyncWrapper(async (req, res, next) => {
   const { body } = req.body;
-  const { stored_in } = req.models;
+  const { stored_in, activity_logs } = req.models;
 
-  const result = await service.deleteStored_In(stored_in, body);
+  const result = await service.deleteStored_In(
+    stored_in,
+    activity_logs,
+    body,
+    req.user,
+  );
 
   res
     .status(200)

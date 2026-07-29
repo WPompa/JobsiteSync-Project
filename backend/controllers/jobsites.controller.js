@@ -18,9 +18,14 @@ const getJobsites = asyncWrapper(async (req, res, next) => {
 
 const createJobsite = asyncWrapper(async (req, res, next) => {
   const { body } = req.body;
-  const { jobsites } = req.models;
+  const { jobsites, activity_logs } = req.models;
 
-  const result = await service.createJobsite(jobsites, body);
+  const result = await service.createJobsite(
+    jobsites,
+    activity_logs,
+    body,
+    req.user,
+  );
 
   res
     .status(201)
@@ -29,9 +34,15 @@ const createJobsite = asyncWrapper(async (req, res, next) => {
 
 const updateJobsites = asyncWrapper(async (req, res, next) => {
   const { body, useEmpty } = req.body;
-  const { jobsites } = req.models;
+  const { jobsites, activity_logs } = req.models;
 
-  const result = await service.updateJobsites(jobsites, body, useEmpty);
+  const result = await service.updateJobsites(
+    jobsites,
+    activity_logs,
+    body,
+    useEmpty,
+    req.user,
+  );
 
   if (result === null) {
     return res.status(204).send();
@@ -44,9 +55,15 @@ const updateJobsites = asyncWrapper(async (req, res, next) => {
 
 const patchJobsite = asyncWrapper(async (req, res, next) => {
   const { id } = req.params;
-  const { jobsites } = req.models;
+  const { jobsites, activity_logs } = req.models;
 
-  const result = await service.patchJobsite(jobsites, id, req.body);
+  const result = await service.patchJobsite(
+    jobsites,
+    activity_logs,
+    id,
+    req.body,
+    req.user,
+  );
 
   res
     .status(200)
@@ -55,9 +72,14 @@ const patchJobsite = asyncWrapper(async (req, res, next) => {
 
 const deleteJobsites = asyncWrapper(async (req, res, next) => {
   const { body } = req.body;
-  const { jobsites } = req.models;
+  const { jobsites, activity_logs } = req.models;
 
-  const result = await service.deleteJobsites(jobsites, body);
+  const result = await service.deleteJobsites(
+    jobsites,
+    activity_logs,
+    body,
+    req.user,
+  );
 
   res
     .status(200)

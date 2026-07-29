@@ -1,6 +1,7 @@
 const { AppError } = require("../utils/AppError");
 const { QueryTypes } = require("sequelize");
 const tables = require("../utils/RawQueries");
+const { createActivity_Log } = require("./activity_logs.service");
 const getPagination = require("../utils/paginationHelper");
 const {
   checkForRequiredValues,
@@ -23,7 +24,7 @@ const getStorage_Areas = async (
   currentLimit,
 ) => {
   //const totalCount = await storage_areaModel.count();
-  [{ Count: totalCount }] = await sequelize.query(tables[table.name].count, {
+  [{ Count: totalCount }] = await sequelize.query(tables[table.name].count(), {
     type: QueryTypes.SELECT,
   });
 
@@ -47,20 +48,25 @@ const getStorage_Areas = async (
     offset,
     limit,
   }); */
-  const result = await sequelize.query(tables[table.name].query, {
+  const result = await sequelize.query(tables[table.name].query(), {
     replacements: { limit, offset },
     type: QueryTypes.SELECT,
   });
 
   //If pagination works as intended this snippet might never be used.
-  if (result.length === 0) {
-    throw new AppError("No Data For Selected Page", 200);
+  if (!result || result.length === 0) {
+    throw new AppError("No Data For Selected Page", 404);
   }
 
   return { result, metadata };
 };
 
-const createStorage_Area = async (storage_areaModel, storage_areaData) => {
+const createStorage_Area = async (
+  storage_areaModel,
+  activity_logsModel,
+  storage_areaData,
+  user,
+) => {
   const required = ["Location"];
 
   checkForRequiredValues(required, storage_areaData);
@@ -86,10 +92,28 @@ const createStorage_Area = async (storage_areaModel, storage_areaData) => {
       );
     }
 
+    await createActivity_Log(activity_logsModel, {
+      ActionType: "CREATE",
+      MaterialName: "",
+      StorageLocation: `${storage_areaData.Location}-${storage_areaData.StorageAreaID}`,
+      JobsiteName: "",
+      QuantityChanged: 0,
+      HandledBy: `${user?.username || "NO USERNAME"}-${user?.AccountID || "NO ID"}`,
+    });
+
     return instanceObj.get({ plain: true });
   }
 
   const result = await storage_areaModel.create(storage_areaData); //{fields: []} to exclude injected key-values.
+
+  await createActivity_Log(activity_logsModel, {
+    ActionType: "CREATE",
+    MaterialName: "",
+    StorageLocation: `${result?.Location}-${result?.StorageAreaID}`,
+    JobsiteName: "",
+    QuantityChanged: 0,
+    HandledBy: `${user?.username || "NO USERNAME"}-${user?.AccountID || "NO ID"}`,
+  });
 
   return result.get({ plain: true });
 };
@@ -97,8 +121,10 @@ const createStorage_Area = async (storage_areaModel, storage_areaData) => {
 //useEmpty is an object with booleans used for flagging values that should be set to null.
 const updateStorage_Areas = async (
   storage_areaModel,
+  activity_logsModel,
   storage_areaData,
   useEmpty,
+  user,
 ) => {
   const required = ["StorageAreaID"];
 
@@ -136,17 +162,41 @@ const updateStorage_Areas = async (
     );
   }
 
-  if (updatedRows.length >= 50) {
+  if (updatedRows.length >= 25) {
+    await createActivity_Log(activity_logsModel, {
+      ActionType: "UPDATE",
+      MaterialName: "",
+      StorageLocation: "Many Locations",
+      JobsiteName: "",
+      QuantityChanged: updatedRows.length,
+      HandledBy: `${user?.username || "NO USERNAME"}-${user?.AccountID || "NO ID"}`,
+    });
+
     return null;
   }
+
+  const promisesArr = updatedRows.map((row) =>
+    createActivity_Log(activity_logsModel, {
+      ActionType: "UPDATE",
+      MaterialName: "",
+      StorageLocation: `${row?.Location}-${row?.StorageAreaID}`,
+      JobsiteName: "",
+      QuantityChanged: 0,
+      HandledBy: `${user?.username || "NO USERNAME"}-${user?.AccountID || "NO ID"}`,
+    }),
+  );
+
+  await Promise.all(promisesArr);
 
   return updatedRows;
 };
 
 const patchStorage_Area = async (
   storage_areaModel,
+  activity_logsModel,
   StorageAreaID,
   patchData,
+  user,
 ) => {
   delete patchData?.StorageAreaID;
 
@@ -171,6 +221,15 @@ const patchStorage_Area = async (
       where: { StorageAreaID },
     });
 
+    await createActivity_Log(activity_logsModel, {
+      ActionType: "PATCH",
+      MaterialName: "",
+      StorageLocation: `${updatedRow?.Location}-${updatedRow.StorageAreaID}`,
+      JobsiteName: "",
+      QuantityChanged: 0,
+      HandledBy: `${user?.username || "NO USERNAME"}-${user?.AccountID || "NO ID"}`,
+    });
+
     return updatedRow.get({ plain: true });
   }
 
@@ -188,7 +247,12 @@ const patchStorage_Area = async (
   return existingRow.get({ plain: true });
 };
 
-const deleteStorage_Areas = async (storage_areaModel, storage_areaData) => {
+const deleteStorage_Areas = async (
+  storage_areaModel,
+  activity_logsModel,
+  storage_areaData,
+  user,
+) => {
   removeEmptyValues(storage_areaData);
 
   const keyValuesArr = processKeyValues(
@@ -212,6 +276,37 @@ const deleteStorage_Areas = async (storage_areaModel, storage_areaData) => {
   if (result === 0) {
     throw new AppError("No matching records found to delete.", 404);
   }
+
+  const storageAreas =
+    keyValuesArr.find((obj) => obj.StorageAreaID)?.StorageAreaID || [];
+  const totalItems = storageAreas.length;
+  const promisesArr = [];
+
+  if (result >= 25) {
+    createActivity_Log(activity_logsModel, {
+      ActionType: "DELETE",
+      MaterialName: "",
+      StorageLocation: "Many Locations",
+      JobsiteName: "",
+      QuantityChanged: result,
+      HandledBy: `${user?.username || "NO USERNAME"}-${user?.AccountID || "NO ID"}`,
+    });
+  } else {
+    for (let i = 0; i < totalItems; i++) {
+      promisesArr.push(
+        createActivity_Log(activity_logsModel, {
+          ActionType: "DELETE",
+          MaterialName: "",
+          StorageLocation: storageAreas[i] || "NO ID",
+          JobsiteName: "",
+          QuantityChanged: 0,
+          HandledBy: `${user?.username || "NO USERNAME"}-${user?.AccountID || "NO ID"}`,
+        }),
+      );
+    }
+  }
+
+  await Promise.all(promisesArr);
 
   return {
     deletedRows: result,

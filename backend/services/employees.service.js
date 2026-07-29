@@ -23,7 +23,7 @@ const getEmployees = async (
   currentLimit,
 ) => {
   //const totalCount = await employeeModel.count();
-  [{ Count: totalCount }] = await sequelize.query(tables[table.name].count, {
+  [{ Count: totalCount }] = await sequelize.query(tables[table.name].count(), {
     type: QueryTypes.SELECT,
   });
 
@@ -45,14 +45,14 @@ const getEmployees = async (
     offset,
     limit,
   }); */
-  const result = await sequelize.query(tables[table.name].query, {
+  const result = await sequelize.query(tables[table.name].query(), {
     replacements: { limit, offset },
     type: QueryTypes.SELECT,
   });
 
   //If pagination works as intended this snippet might never be used.
-  if (result.length === 0) {
-    throw new AppError("No Data For Selected Page", 200);
+  if (!result || result.length === 0) {
+    throw new AppError("No Data For Selected Page", 404);
   }
 
   return { result, metadata };
@@ -126,7 +126,7 @@ const updateEmployees = async (employeeModel, employeeData, useEmpty) => {
     );
   }
 
-  if (updatedRows.length >= 50) {
+  if (updatedRows.length >= 25) {
     return null;
   }
 

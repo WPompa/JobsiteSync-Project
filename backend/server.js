@@ -68,6 +68,9 @@ app.use(baseRoute, auth, storage_areas);
 const stored_in = require("./routes/stored_in.routes");
 app.use(baseRoute, auth, stored_in);
 
+const activity_logs = require("./routes/activity_logs.routes");
+app.use(baseRoute, auth, activity_logs);
+
 const other = require("./routes/other");
 app.use(baseRoute, auth, other);
 
@@ -83,7 +86,8 @@ app.use(errorHandler);
 //For development
 /* let serverInstance; */
 
-/* async function start() { //uncomment here for dev//
+/* async function start() {
+  //uncomment here for dev//
   try {
     // await connectToDB();
     // await sequelize.authenticate();

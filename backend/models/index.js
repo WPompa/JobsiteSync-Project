@@ -5,6 +5,8 @@ const Materials = require("./materials.model");
 const stored_in = require("./stored_in.model");
 const Storage_Areas = require("./storage_areas.model");
 const Jobsites = require("./jobsites.model");
+const Activity_Logs = require("./activity_logs.model");
+const Credentials = require("./credentials.model");
 
 module.exports = (sequelize, DataTypes) => {
   const Employee = Employees(sequelize, DataTypes);
@@ -12,13 +14,19 @@ module.exports = (sequelize, DataTypes) => {
   const Stored_In = stored_in(sequelize, DataTypes);
   const Storage_Area = Storage_Areas(sequelize, DataTypes);
   const Jobsite = Jobsites(sequelize, DataTypes);
+  const Activity_Log = Activity_Logs(sequelize, DataTypes);
+  const Credential = Credentials(sequelize, DataTypes);
 
-  //Associations Should Go Here (cross model associations)//
-  Employee.belongsTo(Jobsite, {
-    as: "jobsiteEmployee",
-    foreignKey: "JobsiteID",
+  // Authentication & Account Mapping (1:1)
+  Employee.hasOne(Credential, {
+    foreignKey: "EmpID",
+    onDelete: "CASCADE",
   });
-  //Self-referencing Associations
+  Credential.belongsTo(Employee, {
+    foreignKey: "EmpID",
+  });
+
+  // Organizational Hierarchies
   Employee.hasMany(Employee, {
     as: "subordinates",
     foreignKey: "SupervisorID",
@@ -29,29 +37,37 @@ module.exports = (sequelize, DataTypes) => {
     foreignKey: "SupervisorID",
     onDelete: "SET NULL",
   });
+
+  // Jobsite -> Employee
   Jobsite.hasMany(Employee, {
     foreignKey: "JobsiteID",
     onDelete: "SET NULL",
   });
-
-  Storage_Area.belongsTo(Jobsite, {
-    as: "jobsiteStorageArea",
+  Employee.belongsTo(Jobsite, {
     foreignKey: "JobsiteID",
     onDelete: "SET NULL",
   });
+
+  // Jobsite -> Storage Area
   Jobsite.hasMany(Storage_Area, {
     foreignKey: "JobsiteID",
     onDelete: "SET NULL",
   });
-
-  Stored_In.belongsTo(Material, {
-    as: "material",
-    foreignKey: "MaterialID",
-    //targetKey: Useful when PK is different. MaterialID in one, randomNameID in another.
+  Storage_Area.belongsTo(Jobsite, {
+    foreignKey: "JobsiteID",
+    onDelete: "SET NULL",
   });
-  Stored_In.belongsTo(Storage_Area, {
-    as: "storageArea",
+
+  // Inventory Relationships (Many-To-Many)
+  Material.belongsToMany(Storage_Area, {
+    through: Stored_In,
+    foreignKey: "MaterialID",
+    otherKey: "StorageAreaID",
+  });
+  Storage_Area.belongsToMany(Material, {
+    through: Stored_In,
     foreignKey: "StorageAreaID",
+    otherKey: "MaterialID",
   });
 
   //For development use only.

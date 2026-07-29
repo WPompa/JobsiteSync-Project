@@ -16,9 +16,14 @@ const getMaterials = asyncWrapper(async (req, res, next) => {
 
 const createMaterial = asyncWrapper(async (req, res, next) => {
   const { body } = req.body;
-  const { materials } = req.models;
+  const { materials, activity_logs } = req.models;
 
-  const result = await service.createMaterial(materials, body);
+  const result = await service.createMaterial(
+    materials,
+    activity_logs,
+    body,
+    req.user,
+  );
 
   res
     .status(201)
@@ -27,9 +32,15 @@ const createMaterial = asyncWrapper(async (req, res, next) => {
 
 const updateMaterials = asyncWrapper(async (req, res, next) => {
   const { body, useEmpty } = req.body;
-  const { materials } = req.models;
+  const { materials, activity_logs } = req.models;
 
-  const result = await service.updateMaterials(materials, body, useEmpty);
+  const result = await service.updateMaterials(
+    materials,
+    activity_logs,
+    body,
+    useEmpty,
+    req.user,
+  );
 
   if (result === null) {
     return res.status(204).send();
@@ -42,9 +53,15 @@ const updateMaterials = asyncWrapper(async (req, res, next) => {
 
 const patchMaterial = asyncWrapper(async (req, res, next) => {
   const { id } = req.params;
-  const { materials } = req.models;
+  const { materials, activity_logs } = req.models;
 
-  const result = await service.patchMaterial(materials, id, req.body);
+  const result = await service.patchMaterial(
+    materials,
+    activity_logs,
+    id,
+    req.body,
+    req.user,
+  );
 
   res
     .status(200)
@@ -53,9 +70,14 @@ const patchMaterial = asyncWrapper(async (req, res, next) => {
 
 const deleteMaterials = asyncWrapper(async (req, res, next) => {
   const { body } = req.body;
-  const { materials } = req.models;
+  const { materials, activity_logs } = req.models;
 
-  const result = await service.deleteMaterials(materials, body);
+  const result = await service.deleteMaterials(
+    materials,
+    activity_logs,
+    body,
+    req.user,
+  );
 
   res
     .status(200)

@@ -18,9 +18,14 @@ const getStorage_Areas = asyncWrapper(async (req, res, next) => {
 
 const createStorage_Area = asyncWrapper(async (req, res, next) => {
   const { body } = req.body;
-  const { storage_areas } = req.models;
+  const { storage_areas, activity_logs } = req.models;
 
-  const result = await service.createStorage_Area(storage_areas, body);
+  const result = await service.createStorage_Area(
+    storage_areas,
+    activity_logs,
+    body,
+    req.user,
+  );
 
   //console.log(JSON.stringify(result));
   res
@@ -30,12 +35,14 @@ const createStorage_Area = asyncWrapper(async (req, res, next) => {
 
 const updateStorage_Areas = asyncWrapper(async (req, res, next) => {
   const { body, useEmpty } = req.body;
-  const { storage_areas } = req.models;
+  const { storage_areas, activity_logs } = req.models;
 
   const result = await service.updateStorage_Areas(
     storage_areas,
+    activity_logs,
     body,
     useEmpty,
+    req.user,
   );
 
   if (result === null) {
@@ -49,9 +56,15 @@ const updateStorage_Areas = asyncWrapper(async (req, res, next) => {
 
 const patchStorage_Area = asyncWrapper(async (req, res, next) => {
   const { id } = req.params;
-  const { storage_areas } = req.models;
+  const { storage_areas, activity_logs } = req.models;
 
-  const result = await service.patchStorage_Area(storage_areas, id, req.body);
+  const result = await service.patchStorage_Area(
+    storage_areas,
+    activity_logs,
+    id,
+    req.body,
+    req.user,
+  );
 
   res
     .status(200)
@@ -60,9 +73,14 @@ const patchStorage_Area = asyncWrapper(async (req, res, next) => {
 
 const deleteStorage_Areas = asyncWrapper(async (req, res, next) => {
   const { body } = req.body;
-  const { storage_areas } = req.models;
+  const { storage_areas, activity_logs } = req.models;
 
-  const result = await service.deleteStorage_Areas(storage_areas, body);
+  const result = await service.deleteStorage_Areas(
+    storage_areas,
+    activity_logs,
+    body,
+    req.user,
+  );
 
   res
     .status(200)
