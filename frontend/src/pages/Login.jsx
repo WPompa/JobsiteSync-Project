@@ -1,20 +1,23 @@
 import { useState, useContext } from "react";
 import { useNavigate, Navigate } from "react-router-dom";
+import { useToast } from "@contexts/toastContext";
 import { UserContext } from "../App";
+import { api } from "../services/API-Service";
 import cog from "../assets/SVG/cog.svg";
 import "./css/login.css";
-import { api } from "../services/API-Service";
 
 const Login = ({ setUser }) => {
   const [login, setLogin] = useState({ username: "", password: "" });
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const { user } = useContext(UserContext);
+  const { addToast } = useToast();
   const navigate = useNavigate();
 
   const bypass = () => {
     localStorage.setItem("token", "Gu3$t");
     setUser({ username: "Guest" });
+    addToast("Logged in as guest user!", "success");
 
     navigate("/Dashboard");
   };

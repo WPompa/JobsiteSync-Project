@@ -1,4 +1,3 @@
-/* Container and Animation */
 .logo {
   padding: 0.25rem;
   will-change: filter;
@@ -18,7 +17,6 @@
   }
 }
 
-/* Fast spin for loading state */
 .spin-fast {
   animation: logo-spin 2s infinite linear !important;
 }
@@ -31,7 +29,6 @@
 
 /* Login Form Layout */
 .login-form {
-  /* Use a percentage max-width for mobile responsiveness */
   width: 90%;
   max-width: 450px;
   margin: 4rem auto;
@@ -40,7 +37,7 @@
   background-color: var(--bg-alt);
   box-shadow: var(--lightShadow);
   border-left: var(--accent) 0.25rem solid;
-  border-radius: 4px; /* Slight rounding looks more modern */
+  border-radius: 4px;
   display: flex;
   flex-direction: column;
 }
