@@ -21,8 +21,8 @@ module.exports = (sequelize, DataTypes) => {
             args: [2, 32],
           },
           is: {
-            args: /^[a-z\s.]+$/i,
-            msg: "First name can only use alphabet characters, spaces, or periods.",
+            args: /^[a-z\s.\-']+$/i,
+            msg: "First name can only use alphabet characters, spaces, periods, hyphens, or apostrophes.",
           },
         },
       },
@@ -35,29 +35,28 @@ module.exports = (sequelize, DataTypes) => {
             args: [2, 32],
           },
           is: {
-            args: /^[a-z\s.]+$/i,
-            msg: "Last name can only use alphabet characters, spaces, or periods.",
+            args: /^[a-z\s.\-']+$/i,
+            msg: "Last name can only use alphabet characters, spaces, periods, hyphens, or apostrophes.",
           },
         },
       },
       Title: {
         type: DataTypes.STRING(32),
+        allowNull: true,
         validate: {
           len: {
             msg: "Title must have 2 - 32 characters.",
             args: [2, 32],
           },
           is: {
-            args: /^[a-z0-9\s.]+$/i,
-            msg: "Title can only contain letters, numbers, spaces, or periods.",
+            args: /^[a-z0-9\s.\-/&]+$/i,
+            msg: "Title can only contain letters, numbers, spaces, periods, hyphens, slashes, or ampersands.",
           },
         },
       },
       SupervisorID: {
         type: DataTypes.INTEGER,
-        validate: {
-          isNumeric: true,
-        },
+        allowNull: true,
         references: {
           model: "employees",
           key: "EmpID",
@@ -65,9 +64,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       JobsiteID: {
         type: DataTypes.INTEGER,
-        validate: {
-          isNumeric: true,
-        },
+        allowNull: true,
         references: {
           model: "jobsites",
           key: "JobsiteID",
@@ -76,7 +73,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       tableName: "employees",
-      //timestamps: false,
+      timestamps: false,
     },
   );
   return Employee;
@@ -84,84 +81,7 @@ module.exports = (sequelize, DataTypes) => {
 
 //Creation example: const employee = await Employee.create({objFromFrontend}, {fields: [allowedValuesUnlistedAreIgnored]})
 
-//Initial way I tried after trying to host on vercel.
-/* const Employee = (sequelize, DataTypes) =>
-  sequelize.define(
-    "employees",
-    {
-      EmpID: {
-        //Do I need validate:{} here?
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
-        primaryKey: true,
-        allowNull: false,
-      },
-      Fname: {
-        type: DataTypes.STRING(32),
-        allowNull: false,
-        validate: {
-          len: {
-            msg: "Must have 2 - 32 characters.",
-            args: [1, 33], 
-          },
-          isAlpha: {
-            msg: "First Name can only use alphabet characters",
-          },
-        },
-      },
-      Lname: {
-        type: DataTypes.STRING(32),
-        allowNull: false,
-        validate: {
-          len: {
-            msg: "Must have 2 - 32 characters.",
-            args: [1, 33], 
-          },
-          isAlpha: {
-            msg: "Last Name can only use alphabet characters",
-          },
-        },
-      },
-      Title: {
-        type: DataTypes.STRING(32),
-        validate: {
-          len: {
-            msg: "Must have 2 - 32 characters.",
-            args: [1, 33], 
-          },
-          isAlphanumeric: true,
-        },
-      },
-      SupervisorID: {
-        type: DataTypes.INTEGER,
-        validate: {
-          //Might not need, check later.
-          isNumeric: true,
-        },
-        references: {
-          model: "employees",
-          key: "EmpID",
-        },
-      },
-      JobsiteID: {
-        type: DataTypes.INTEGER,
-        validate: {
-          //Might not need, check later.
-          isNumeric: true,
-        },
-        references: {
-          model: "jobsites",
-          key: "JobsiteID",
-        },
-      },
-    },
-    {
-      tableName: "employees",
-      //timestamps: false,
-    }
-  );
-
 //Creation example: const employee = await Employee.create({objFromFrontend}, {fields: [allowedValuesUnlistedAreIgnored]})
-
+/*
 module.exports = Employee;
  */

@@ -19,8 +19,8 @@ module.exports = (sequelize, DataTypes) => {
             args: [2, 32],
           },
           is: {
-            args: /^[a-z\s.]+$/i,
-            msg: "Jobsite can only use alphabet characters, spaces, or periods.",
+            args: /^[a-z\d\s.\-#]+$/i,
+            msg: "Jobsite name can only use alphanumeric characters, spaces, periods, hyphens, or hash signs.",
           },
         },
       },
@@ -34,7 +34,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       tableName: "jobsites",
-      //timestamps: false,
+      timestamps: false,
     },
   );
 

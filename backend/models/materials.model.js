@@ -19,8 +19,8 @@ module.exports = (sequelize, DataTypes) => {
             args: [2, 64],
           },
           is: {
-            args: /^[a-z\d\s.]+$/i,
-            msg: "Material name can only use alphabet characters, spaces, or periods.",
+            args: /^[a-z\d\s.\-/#]+$/i,
+            msg: "Material name can only use alphanumeric characters, spaces, periods, hyphens, slashes, or hash signs.",
           },
         },
       },
@@ -33,8 +33,8 @@ module.exports = (sequelize, DataTypes) => {
             args: [2, 64],
           },
           is: {
-            args: /^[a-z\s.]+$/i,
-            msg: "Material type can only use alphabet characters, spaces, or periods.",
+            args: /^[a-z\s.\-]+$/i,
+            msg: "Material type can only use alphabet characters, spaces, periods, or hyphens.",
           },
         },
       },
@@ -56,21 +56,23 @@ module.exports = (sequelize, DataTypes) => {
             args: [2, 64],
           },
           is: {
-            args: /^[a-z\d\s.]+$/i,
-            msg: "Supplier name can only use alphabet characters, spaces, or periods.",
+            args: /^[a-z\d\s.\-&]+$/i,
+            msg: "Supplier name can only use alphanumeric characters, spaces, periods, hyphens, or ampersands.",
           },
         },
       },
       TotalAvailable: {
         type: DataTypes.SMALLINT,
+        defaultValue: 0,
       },
       LostAmounts: {
         type: DataTypes.SMALLINT,
+        defaultValue: 0,
       },
     },
     {
       tableName: "materials",
-      //timestamps: false,
+      timestamps: false,
     },
   );
 

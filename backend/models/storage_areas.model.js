@@ -28,13 +28,14 @@ module.exports = (sequelize, DataTypes) => {
             args: [2, 64],
           },
           is: {
-            args: /^[a-z0-9\s.]+$/i,
-            msg: "Location can only contain letters, numbers, spaces, or periods.",
+            args: /^[a-z\d\s.\-/#]+$/i,
+            msg: "Location can only use alphanumeric characters, spaces, periods, hyphens, slashes, or hash signs.",
           },
         },
       },
       JobsiteID: {
         type: DataTypes.INTEGER,
+        allowNull: true,
         references: {
           model: "jobsites",
           key: "JobsiteID",
@@ -42,6 +43,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       TotalStored: {
         type: DataTypes.SMALLINT,
+        allowNull: false,
         defaultValue: 0,
       },
       Is_Container: {
@@ -52,7 +54,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       tableName: "storage_areas",
-      //timestamps: false,
+      timestamps: false,
     },
   );
 
