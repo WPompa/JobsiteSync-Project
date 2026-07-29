@@ -1,6 +1,6 @@
 import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { useToast } from "@contexts/toastContext";
+import { useToast } from "@contexts/ToastContext";
 import { UserContext } from "../App";
 import LightningBoltIcon from "../components/minor-components/icons/LightningBoltIcon";
 import MapPinIcon from "../components/minor-components/icons/MapPinIcon";

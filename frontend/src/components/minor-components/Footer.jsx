@@ -1,4 +1,4 @@
-import { useToast } from "@contexts/toastContext";
+import { useToast } from "@contexts/ToastContext";
 import "./css/footer.css";
 
 const Footer = () => {
