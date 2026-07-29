@@ -1,10 +1,34 @@
+import { useToast } from "@contexts/toastContext";
 import "./css/footer.css";
 
 const Footer = () => {
+  const { addToast } = useToast();
+
+  const handleDummyLink = (e) => {
+    e.preventDefault();
+    addToast("This is a mock link for demo purposes.", "success");
+  };
+
   return (
-    <footer>
-      <p>&lt;&lt; &copy; 2025 Walter Pompa &gt;&gt;</p>
-      <p>API Connected CRUD Web App</p>
+    <footer className="footer">
+      <div className="footerContent">
+        <p>Developed for full-stack portfolio presentation.</p>
+        <p>
+          &copy; 2025 - {new Date().getFullYear()} <strong>Walter Pompa</strong>
+          . All rights reserved. | <em>JobsiteSync</em>
+        </p>
+        <div className="footerLinks">
+          <a href="#docs" onClick={handleDummyLink}>
+            Documentation
+          </a>
+          <a href="#terms" onClick={handleDummyLink}>
+            Terms of Service
+          </a>
+          <a href="#privacy" onClick={handleDummyLink}>
+            Privacy Architecture
+          </a>
+        </div>
+      </div>
     </footer>
   );
 };

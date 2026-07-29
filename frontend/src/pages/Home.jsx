@@ -1,204 +1,144 @@
-import { useState, useReducer } from "react";
-import { LazyLoadImage } from "react-lazy-load-image-component";
-import "react-lazy-load-image-component/src/effects/blur.css";
-import cogs from "../assets/SVG/cogs.svg";
-import {
-  login,
-  loginAlt,
-  dashboard,
-  dashboardAlt,
-  dashboardInput,
-  dashboardInputAlt,
-} from "../assets";
-import "./css/home.css";
+import { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { useToast } from "@contexts/toastContext";
+import { UserContext } from "../App";
+import LightningBoltIcon from "../components/minor-components/icons/LightningBoltIcon";
+import MapPinIcon from "../components/minor-components/icons/MapPinIcon";
+import ShieldHalvedIcon from "../components/minor-components/icons/ShieldHalvedIcon";
+import styles from "./css/Home.module.css";
 
-const initialState = {
-  showImageOne: false,
-  showImageTwo: false,
-  showImageThree: false,
-};
+export default function Home() {
+  const navigate = useNavigate();
+  const { setUser } = useContext(UserContext);
+  const { addToast } = useToast();
 
-const reducer = (state, action) => {
-  if (action.type === "showImageOne") {
-    return { ...state, showImageOne: !state.showImageOne };
-  }
+  const handleGuestBypass = async () => {
+    addToast("Logged in as guest user!", "success");
+    localStorage.setItem("token", "Gu3$t");
+    setUser({ username: "Guest" });
 
-  if (action.type === "showImageTwo") {
-    return { ...state, showImageTwo: !state.showImageTwo };
-  }
+    navigate("/Dashboard");
+  };
 
-  if (action.type === "showImageThree") {
-    return { ...state, showImageThree: !state.showImageThree };
-  }
-
-  throw Error("Unknown Action: " + action.type);
-};
-
-const Home = () => {
-  const [state, dispatch] = useReducer(reducer, initialState);
   return (
-    <div className="home">
-      <section className="homepage-section">
-        <h2 className="homepage-h1">Welcome</h2>
+    <div className={styles.wrapper}>
+      <header className={styles.heroSection}>
+        <div className={styles.heroContent}>
+          <span className={styles.badge}>JobsiteSync</span>
 
-        <p className=" homepage-p">Thank you for visiting my project!</p>
+          <h1 className={styles.heroTitle}>
+            Eliminate Material Fragmentation Across Your Active Jobsites
+          </h1>
 
-        <div className="svg-container">
-          <img src={cogs} alt="cogs" className="cogs homepage-svg" />
+          <p className={styles.heroSubtitle}>
+            A centralized, full-stack management system designed to track what
+            inventory you have available, exactly where it is stored, and who
+            handled it last.
+          </p>
+
+          <div className={styles.buttonGroup}>
+            <button onClick={handleGuestBypass} className={styles.primaryBtn}>
+              Launch Guest Demo
+            </button>
+
+            <button
+              onClick={() => navigate("/login")}
+              className={styles.secondaryBtn}
+            >
+              Administrator Login
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <section className={styles.problemSection}>
+        <div className={styles.sectionHeader}>
+          <h2>The Operational Bottleneck</h2>
+          <p>
+            Why modern construction crews lose profit margins to material
+            management friction.
+          </p>
         </div>
 
-        <h3 className="homepage-h3">Purpose</h3>
-        <p className=" homepage-p">
-          The intended use for this app is to have a way to coordinate and share
-          information regarding "construction logistics". Information about
-          material types, material amounts, related storage location, and how
-          much & where per jobsite, alongside who is removing or adding material
-          is all sent to this frontend. In bringing about this intended use, I
-          am testing, learning, and implementing various React features,
-          libraries that build on React, Node JS, Express JS, and NPM packages
-          that make database manipulation on the backend a breeze.
-        </p>
+        <div className={styles.problemGrid}>
+          <div className={styles.problemCard}>
+            <h4>Fragmented Paper Logs</h4>
 
-        <h3 className="homepage-h3">Details</h3>
-        <p className=" homepage-p">
-          As of December 2025, the app is very much so a <i>work-in-progress</i>{" "}
-          with current and future features subject to change. <br /> <br />
-          The app's frontend is built with React and React Router, the backend
-          is built with Express JS and MySQL2, and the database uses MySQL. For
-          more general information and which other packages or libraries were
-          used check out the project's Github{" "}
-          <a
-            href="https://github.com/WPompa/construction-logistics"
-            target="_blank"
-            rel="noopener"
-          >
-            repository
-          </a>
-          .
-        </p>
+            <p>
+              Relying on loose intake clipboards and scattered text messages
+              leads to severe material inaccuracies and accidental reorders.
+            </p>
+          </div>
+
+          <div className={styles.problemCard}>
+            <h4>Blind Storage Locations</h4>
+
+            <p>
+              Knowing you have available resources is useless if your team
+              spends hours searching the wrong storage areas trying to
+              physically locate them.
+            </p>
+          </div>
+        </div>
       </section>
 
-      <section className="homepage-section">
-        <h2 className="homepage-h2">The Login Page</h2>
-        <p className=" homepage-p">
-          For now, there is a simple login page that is a placeholder for a
-          future implementation of JSON Web Tokens.
-        </p>
+      <section className={styles.solutionSection}>
+        <div className={styles.sectionHeader}>
+          <h2>Designed for High-Velocity Logistics</h2>
 
-        <ShowImage
-          img={login}
-          alt={loginAlt}
-          callback={() => dispatch({ type: "showImageOne" })}
-        />
+          <p>
+            A robust asset engine engineered to handle complex field operations
+            without performance compromises.
+          </p>
+        </div>
 
-        <p className=" homepage-p">
-          Currently there is no need to input a username or password. The{" "}
-          <span className={state.showImageOne ? "red bold" : "bold"}>
-            Login
-          </span>{" "}
-          has been disabled until future features are added behind the scenes.
-          Simply click on{" "}
-          <span className={state.showImageOne ? "green bold" : "bold"}>
-            Bypass
-          </span>{" "}
-          to begin interacting with the app.
-        </p>
-      </section>
+        <div className={styles.featuresGrid}>
+          <div className={styles.featureCard}>
+            <div className={styles.iconBox}>
+              <LightningBoltIcon className={styles.lightningbolt} />
+            </div>
 
-      <section className="homepage-section">
-        <h2 className="homepage-h2">The Dashboard Page</h2>
-        <p className=" homepage-p">
-          The main user experience. The dashboard has a simple interface that
-          renders the data and allows additions, changes, and deletions to the
-          data stored in the database. It is the part of the frontend that
-          connects to a backend through API endpoints. The backend feeds the
-          frontend with data queried from a database. There is much more planned
-          with future features and modifications to be added over time.
-        </p>
+            <h3>Lag-Free Bulk Updating</h3>
 
-        <ShowImage
-          img={dashboard}
-          alt={dashboardAlt}
-          callback={() => dispatch({ type: "showImageTwo" })}
-        />
+            <p>
+              Modify quantities and storage notes directly within your data
+              grid. Changes process asynchronously in the background, updating
+              your active workspace instantly without disruptive full-page
+              loader delays.
+            </p>
+          </div>
 
-        <p className=" homepage-p">
-          The{" "}
-          <span className={state.showImageTwo ? "blue bold" : "bold"}>
-            Main Buttons
-          </span>{" "}
-          allow a user to add, change, or delete data stored on the database.
-          API endpoints handle the changes if the user submits the required info
-          within a respective button. The reload button will reload data and
-          display any new changes in the selected table. The{" "}
-          <span className={state.showImageTwo ? "green bold" : "bold"}>
-            Page Buttons
-          </span>{" "}
-          on the bottom right and bottom left of the blue window allow the user
-          to look through pages of data. The{" "}
-          <span className={state.showImageTwo ? "yellow bold" : "bold"}>
-            Table Selector and Page Options
-          </span>{" "}
-          allow the user to choose what data to render, the current page, and
-          items per page they would like to see. The{" "}
-          <span className={state.showImageTwo ? "red bold" : "bold"}>
-            Reset Queries
-          </span>{" "}
-          button is currently disabled until more functionality is introduced in
-          the backend.
-        </p>
+          <div className={styles.featureCard}>
+            <div className={styles.iconBox}>
+              <MapPinIcon className={styles.mapPinIcon} />
+            </div>
 
-        <ShowImage
-          img={dashboardInput}
-          alt={dashboardInputAlt}
-          callback={() => dispatch({ type: "showImageThree" })}
-        />
+            <h3>Sub-Location Allocation</h3>
 
-        <p className=" homepage-p">
-          The{" "}
-          <span className={state.showImageThree ? "green bold" : "bold"}>
-            Input Field
-          </span>{" "}
-          is where the user fills in, at minimum, the required information
-          needed to add, change, or delete data from the database. The change
-          and delete forms allow for multiple simultaneous entries separated by
-          commas. A message will pop up on the screen if there was an error
-          during submission or while requesting a table.
-        </p>
+            <p>
+              Eliminate blind spots. Track inventory down to specific storage
+              yards, sheds, bins, or containers using a strict relational model
+              that guarantees your counts stay perfectly aligned across
+              multi-tiered sites.
+            </p>
+          </div>
+
+          <div className={styles.featureCard}>
+            <div className={styles.iconBox}>
+              <ShieldHalvedIcon className={styles.shieldIcon} />
+            </div>
+
+            <h3>Fail-Safe Material Guards</h3>
+
+            <p>
+              Protect your operational history from human error. Integrated
+              server-side validation blocks blank submissions, intercepts
+              accidental bulk deletions, and stops duplicate record corruption
+              automatically.
+            </p>
+          </div>
+        </div>
       </section>
     </div>
   );
-};
-
-const ShowImage = ({ img, alt, callback }) => {
-  const [showImage, setShowImage] = useState(false);
-
-  return (
-    <>
-      <div>
-        <button
-          type="button"
-          onClick={() => {
-            setShowImage(!showImage);
-            callback();
-          }}
-        >
-          {showImage ? "Hide" : "Show"} Image
-        </button>
-      </div>
-
-      {showImage && (
-        <div className="img-container">
-          <LazyLoadImage
-            src={img}
-            placeholderSrc={alt}
-            alt="LQPI Alt"
-            effect="blur"
-          />
-        </div>
-      )}
-    </>
-  );
-};
-
-export default Home;
+}

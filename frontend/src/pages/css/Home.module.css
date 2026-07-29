@@ -1,0 +1,252 @@
+/* Core Structure */
+.wrapper {
+  width: 95%;
+  max-width: var(--max-width);
+  background-color: var(--bg-light) /* #f9fafb */;
+  margin: 0 auto 0.25rem;
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    sans-serif;
+  line-height: 1.5;
+}
+
+.sectionHeader {
+  text-align: center;
+  margin-bottom: 2.5rem;
+  padding: 0 1rem;
+}
+
+.sectionHeader h2 {
+  font-size: 2rem;
+  color: var(--header);
+  margin-bottom: 0.75rem;
+  font-weight: 800;
+}
+
+.sectionHeader p {
+  color: var(--subtitle);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* SECTION 1: HERO STYLING */
+.heroSection {
+  padding: 6rem 1.5rem 5rem 1.5rem;
+  background: radial-gradient(
+    circle at top right,
+    rgba(245, 246, 247, 0.25) 0%,
+    rgba(33, 118, 255, 0.6) 100%
+  );
+  display: flex;
+  justify-content: center;
+}
+
+.heroContent {
+  text-align: center;
+  max-width: 800px;
+}
+
+.badge {
+  background-color: var(--secondaryAlt);
+  color: var(--accent);
+  padding: 0.35rem 0.85rem;
+  border-radius: var(--pillShape);
+  font-size: 0.875rem;
+  font-weight: 600;
+  display: inline-block;
+  margin-bottom: 1.5rem;
+}
+
+.heroTitle {
+  font-size: 2.75rem;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+  color: var(--header);
+  margin-bottom: 1.5rem;
+}
+
+.heroSubtitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--subtitle);
+  margin-bottom: 2.5rem;
+  line-height: 1.6;
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.primaryBtn,
+.secondaryBtn {
+  padding: 0.85rem 1.75rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.primaryBtn {
+  background-color: var(--accent);
+  color: var(--text);
+  border: 1px solid #2563eb;
+}
+
+.primaryBtn:hover {
+  color: var(--text);
+  background-color: #2563eb /* #1d4ed8 */;
+}
+
+.secondaryBtn {
+  background-color: #ffffff;
+  color: #374151;
+  border: 1px solid #d1d5db;
+}
+
+.secondaryBtn:hover {
+  background-color: var(--bg-light);
+  border-color: #9ca3af;
+}
+
+/* SECTION 2: THE PROBLEM STYLING */
+.problemSection {
+  padding: 5rem 1.5rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.problemGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.problemCard {
+  background-color: #ffffff;
+  border-left: 4px solid var(--caution);
+  padding: 1.75rem;
+  border-radius: 0 8px 8px 0;
+  box-shadow: var(--lightShadow);
+}
+
+.problemCard h4 {
+  font-size: 1.25rem;
+  margin: 0 0 0.75rem 0;
+  color: var(--header);
+}
+
+.problemCard p {
+  color: #4b5563;
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+/* SECTION 3: THE FEATURE CARDS GRID */
+.solutionSection {
+  padding: 5rem 1.5rem 7rem 1.5rem;
+  background-color: var(--bg-light);
+}
+
+.featuresGrid {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 2rem;
+  align-items: stretch;
+}
+
+.featureCard {
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+  padding: 2.5rem 2rem;
+  border-radius: 8px;
+  box-shadow: var(--lightShadow);
+  transition: transform 0.2s ease;
+}
+
+.featureCard:hover {
+  transform: translateY(-4px);
+}
+
+.iconBox {
+  font-size: 2rem;
+  margin-bottom: 1.25rem;
+}
+
+.lightningbolt {
+  display: inline-block;
+  width: 2rem;
+  height: 2rem;
+  color: #f1c40f;
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+.lightningbolt:hover {
+  color: #e67e22;
+  transform: translateY(-2px);
+}
+
+.mapPinIcon {
+  display: inline-block;
+  width: 2rem;
+  height: 2rem;
+  color: #e74c3c;
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+.mapPinIcon:hover {
+  color: #c0392b;
+  transform: scale(1.1);
+}
+
+.shieldIcon {
+  display: inline-block;
+  width: 2rem;
+  height: 2rem;
+  color: #34495e;
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+.shieldIcon:hover {
+  color: #3498db;
+  transform: rotate(5deg);
+}
+
+.featureCard h3 {
+  font-size: 1.35rem;
+  color: var(--header);
+  margin: 0 0 0.85rem 0;
+}
+
+.featureCard p {
+  color: #4b5563;
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+@media (max-width: 550px) {
+  .wrapper {
+    width: 98%;
+  }
+
+  .heroTitle {
+    font-size: 2rem;
+  }
+  .heroSection {
+    padding: 4rem 1rem 3.5rem 1rem;
+  }
+}

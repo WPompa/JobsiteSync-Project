@@ -4,21 +4,29 @@
 :root {
   /* Core Colors */
   --primary: #1a1a1a;
-  --secondary: #242424;
+  --primaryAlt: #0a0a23;
+  --secondary: #a7a2a9;
+  --secondaryAlt: #f5f6f7;
   --accent: #2176ff;
-  --alt-color1: #1a1a1a;
+  --header: #111827;
+  --subtitle: #4b5563;
+  --caution: #f59e0b;
   --alt-color2: #0a0a23;
   --alt-color3: #005eff;
   --alt-color3: #ddd8b8;
+  --alt-color4: #3b3b4f;
+  --alt-color5: #f9fafb;
   --bg: #1a1a1a;
   --bg-alt: #242424;
+  --bg-light: rgb(219, 220, 221);
   --bg-alt-glass: rgba(36, 36, 36, 0.2);
   --bg-alt-glass-hover: rgba(150, 150, 150, 0.25);
 
   /* Text Colors */
   --text: #ffffff;
   --text-alt: #2176ff;
-  --text-muted: #ddd8b8;
+  --text-muted: #9ca3af;
+  --text-mutedAlt: #ddd8b8;
 
   /* Interaction & States */
   --hover: #2176ff;
@@ -26,6 +34,8 @@
   --border: #2176ff;
 
   /* Layout & Shadows */
+  --pillShape: 9999px;
+  --circleShape: 50%;
   --lightShadow: 2px 4px 2px 0px rgba(0, 0, 0, 0.5);
   --max-width: 2560px;
   --min-width: 390px;

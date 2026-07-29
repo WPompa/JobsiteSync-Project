@@ -483,7 +483,7 @@
   }
 
   .dashboard-input-container {
-    border-left: var(--accent) 0.125rem solid;
+    border-left: var(--accent) 0.25rem solid;
   }
 
   .dashboard-input-controls {
