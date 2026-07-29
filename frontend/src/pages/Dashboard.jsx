@@ -20,6 +20,7 @@ const DBTableNames = {
   "Storage Areas": "storageareas",
   Jobsites: "jobsites",
   Leadership: "leadership",
+  "Activity Logs": "activitylogs",
 };
 
 const Dashboard = () => {

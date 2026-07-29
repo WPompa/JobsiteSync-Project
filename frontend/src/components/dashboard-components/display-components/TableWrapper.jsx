@@ -15,6 +15,8 @@ const getID = (rowData, tableToDisplay) => {
       return `storageareas-${rowData.StorageAreaID}`;
     case "storedin":
       return `${rowData.StorageAreaID}-${rowData.JobsiteID}-${rowData.MaterialID}`;
+    case "activitylogs":
+      return `${rowData.LogID}`;
     default:
       throw new Error("No Obtainable Row ID!");
   }

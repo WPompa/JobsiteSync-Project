@@ -1,0 +1,39 @@
+.activityLogs-container {
+  display: grid;
+  gap: 0;
+  grid-template-columns: var(--img-grid-col) 0.15rem 2fr 0.15rem 1fr;
+}
+
+.item-actiontype {
+  font-weight: bold;
+}
+.item-timestamp {
+  font-size: 0.75rem;
+}
+
+.material,
+.location,
+.jobsite {
+  font-size: 1.2rem;
+}
+
+/* ----- iPhone 13 - Portrait ----- */
+@media only screen and (max-width: 550px) {
+  .activityLogs-container {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .item-img-id {
+    grid-column: 1 / span 2;
+  }
+
+  .item-divider {
+    grid-column: 1 / span 2;
+  }
+  .item-material-location-jobsite {
+    grid-column: 1 / span 2;
+  }
+  .item-timestamp-handledby {
+    grid-column: 1 / span 2;
+  }
+}

@@ -6,6 +6,7 @@ import StorageAreas from "./display-components/StorageAreas";
 import Materials from "./display-components/Materials";
 import StoredIn from "./display-components/StoredIn";
 import Leadership from "./display-components/Leadership";
+import ActivityLogs from "./display-components/ActivityLogs";
 
 const viewMap = {
   employees: Employees,
@@ -14,6 +15,7 @@ const viewMap = {
   jobsites: Jobsites,
   storageareas: StorageAreas,
   storedin: StoredIn,
+  activitylogs: ActivityLogs,
 };
 
 const DisplayData = ({ tableToDisplay, data, dataUpdatedAt }) => {
