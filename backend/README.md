@@ -53,30 +53,14 @@ This application benefits from database index optimization paths to run high-spe
 SUGGESTED
 
 ```sql
-CREATE INDEX idx_storage_areas_jobsiteid ON storage_areas (JobsiteID);
-CREATE INDEX idx_stored_in_storageareaid ON stored_in (StorageAreaID);
-CREATE INDEX idx_stored_in_materialid ON stored_in (MaterialID);
 CREATE INDEX idx_employees_jobsite_title ON employees (JobsiteID, Title);
-CREATE INDEX idx_employees_supervisorid ON employees (supervisorid);
 ```
 
-Information regarding the indexes:
+Information regarding the index(es):
 
 ```sql
--- Speeds up filtering and sorting of Storage Areas by their assigned Jobsite.
-CREATE INDEX idx_storage_areas_jobsiteid ON storage_areas (JobsiteID);
-
--- Improves linking stored quantities to their specific Storage Area location.
-CREATE INDEX idx_stored_in_storageareaid ON stored_in (StorageAreaID);
-
--- Improves linking stored quantities to specific Material definitions.
-CREATE INDEX idx_stored_in_materialid ON stored_in (MaterialID);
-
 -- Composite index: Optimizes finding employees with a specific role at a specific Jobsite.
 CREATE INDEX idx_employees_jobsite_title ON employees (JobsiteID, Title);
-
--- Enables fast lookups of an employee's supervisor for organizational reporting.
-CREATE INDEX idx_employees_supervisorid ON employees (supervisorid);
 ```
 
 ## Local Setup

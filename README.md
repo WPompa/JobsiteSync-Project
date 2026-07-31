@@ -6,7 +6,9 @@ JobsiteSync is a B2B construction material logistics management system built to 
 across active jobsites. The application tracks inventory levels down to specific designated zones, yard bins, and localized storage units.
 It balances structural database normalization with performance by combining a normalized multi-table database schema with a dedicated raw
 query performance layer. The application features a semi-realistic SaaS marketing landing page wrapper that transitions into a functional,
-data-dense administrative control dashboard. For demo purposes there is access via a dedicated "Guest Bypass" authentication route.
+data-dense administrative control dashboard. **It is meant as a browser-first tool for administrators or logistics coordinators**. A
+separate companion mobile app is intended for employees active on a jobsite or running ground logistics. For demo purposes there is access
+via a dedicated "Guest Bypass" authentication route.
 
 ## Monorepo Strategy
 
