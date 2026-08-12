@@ -2,24 +2,23 @@
 
 ## Project Overview
 
-JobsiteSync is a B2B construction material logistics management system built to solve material volume and tracking challenges
-across active jobsites. The application tracks inventory levels down to specific designated zones, yard bins, and localized storage units.
-It balances structural database normalization with performance by combining a normalized multi-table database schema with a dedicated raw
-query performance layer. The application features a semi-realistic SaaS marketing landing page wrapper that transitions into a functional,
-data-dense administrative control dashboard. **It is meant as a browser-first tool for administrators or logistics coordinators**. A
-separate companion mobile app is intended for employees active on a jobsite or running ground logistics. For demo purposes there is access
-via a dedicated "Guest Bypass" authentication route.
+JobsiteSync is a B2B construction material logistics system built to track inventory down to specific yard bins, designated zones, and
+localized storage units. The application has a normalized multi-table database schema that uses Sequelize ORM and raw SQL queries. The
+application features a mock SaaS landing page selling a product and transitions into a functional, paginated administrative control
+dashboard. It is a portfolio project to demonstrate junior-level, full-stack competency and not meant to meet real SaaS product
+requirements. **It is as a browser-first tool for administrators or logistics coordinators**. A separate companion mobile app is
+planned for employees active on a jobsite or running ground logistics. For demo purposes there is access via a dedicated "Guest Bypass"
+authentication route.
 
 ## Monorepo Strategy
 
-This project is structured as a single-repository multi-app layout. It orchestrates its internal applications without a formal workspace
-manager like npm workspaces or pnpm. Instead, a centralized orchestration layer in the root package configuration uses custom prefix
-execution scripts and the concurrently engine to boot, install, and execute the isolated frontend and backend environments from a single
-terminal stream.
+This project is structured as a single-repository multi-app layout. It runs its internal applications without a formal workspace
+manager like npm workspaces or pnpm. Instead, the root package configuration uses custom prefix execution scripts and the concurrently
+package to boot, install, and execute the separate frontend and backend environments from a single terminal.
 
 ## Architecture Diagram
 
-```bash
+```
 ┌────────────────────────────────────────────────────────┐
 │                      Web Browser                       │
 │  ┌───────────────────────┐   ┌──────────────────────┐  │
@@ -33,23 +32,23 @@ terminal stream.
 ┌────────────────────────────────────────────────────────┐
 │                 Backend Express Server                 │
 │  ┌──────────────────────────────────────────────────┐  │
-│  │   Express HTTP App Engine (Port 8081 / Node.js)  │  │
+│  │   Express Setup (Port 8081 / Node.js)            │  │
 │  │   - App Security (Helmet & CORS)                 │  │
-│  │   - Traffic Control (Express-Rate-Limit)         │  │
-│  │   - Auth State (JsonWebToken Processing)         │  │
+│  │   - Rate Limiting (Express-Rate-Limit)           │  │
+│  │   - Authentication (JSON Web Tokens)             │  │
 │  │   - Query Controller (Sequelize ORM & Raw SQL)   │  │
-│  └───────────────────────────┬──────────────────────┘  │
+│  └────────────────────────┬─────────────────────────┘  │
 └────────────────────────────────────────────────────────┘
-                               │
-                               │ mysql2 Driver Link
-                               ▼
+                            │
+                            │ mysql2 Driver Link
+                            ▼
 ┌────────────────────────────────────────────────────────┐
-│                   Database Cluster                     │
+│                        Database                        │
 │  ┌──────────────────────────────────────────────────┐  │
 │  │                 MySQL Engine                     │  │
 │  │   - Normal Tables (5 tables)                     │  │
-│  │   - Junction Inventory Entities (1 table)        │  │
-│  │   - Custom Speed Optimized B-Tree Indexes        │  │
+│  │   - Junction Table (1 table)                     │  │
+│  │   - 1 B-Tree Index                               │  │
 │  └──────────────────────────────────────────────────┘  │
 └────────────────────────────────────────────────────────┘
 ```
@@ -58,28 +57,28 @@ terminal stream.
 
 ```bash
 jobsitesync-project/
-├── backend/ # Express REST API application workspace
-│   ├── config/ # Database connectivity configurations
-│   ├── controllers/ # Request routers and parameter mapping
-│   ├── middleware/ # Security, authentication, and error wrappers
-│   ├── models/ # Sequelize entity schemas and instance configurations
-│   ├── routes/ # Express endpoint URI structures
-│   ├── services/ # Core business rules and query orchestration
+├── backend/ # Express REST API
+│   ├── config/ # Database connection config
+│   ├── controllers/ # Route controllers
+│   ├── middleware/ # JWT, rate-limiting, and error handling
+│   ├── models/ # Sequelize models
+│   ├── routes/ # Express endpoints
+│   ├── services/ # Core business rules and query related logic
 │   ├── tests/ # Basic Jest integration suites and sample seed files
 │   └── utils/ # Query helpers, filter parsers, and raw query code
-├── frontend/ # Vite client framework workspace
-│   ├── public/ # Static robot text guidelines and root graphics
-│   └── src/ # Clien React context
-│       ├── assets/ # Default media assets and SVG elements
+├── frontend/ # React SPA (Vite)
+│   ├── public/ # robots.txt
+│   └── src/ # React client source code
+│       ├── assets/ # Default Images and SVG elements
 │       ├── components/ # Grid dashboard elements and input setups
-│       ├── contexts/ # Global state monitors and toast elements
+│       ├── contexts/ # Global toast context
 │       ├── hooks/ # URL param controllers and optimistic updates
-│       ├── pages/ # Marketing wrappers and dashboard routing layouts
-│       ├── services/ # Fetch backend connectivity layer
-│       └── utils/ # Event handling patterns and data validations
-├── DatabaseDesignDoc.pdf # Unified database layout and starter creation scripts
-├── package.json # Monorepo task orchestration configuration
-└── README.md # Project root manual
+│       ├── pages/ # Main page views
+│       ├── services/ # Reuseable Fetch API service
+│       └── utils/ # Toast event and input validations
+├── DatabaseDesignDoc.pdf # Database info and starter creation scripts
+├── package.json # Monorepo launch configuration
+└── README.md # Project documentation
 ```
 
 ## Global Prerequisites
@@ -108,23 +107,23 @@ npm run install-all
 ### 3. Initialize the Core Database
 
 Ensure your local MySQL database engine instance is running. Locate the `DatabaseDesignDoc.pdf` file in the root folder. Open
-the file and copy the table structures along with raw insertion scripts directly into your preferred SQL console to build your local
-tracking tables. The queries for the performance indexes are in the backend `README.md` file.
+the file and run the table creation + seed queries in your preferred SQL console to build your local tracking tables. The
+queries for the performance indexes are in the backend `README.md` file.
 
-### 4. Configure Configurations
+### 4. Setup Environment Variables
 
-Review and supply local environment configurations for both applications by creating `.env` files within both the `/frontend`
-and `/backend` application directories, following the specific sub-README instructions.
+Create a `.env` file in both the `/frontend` and `/backend` directories. Fill in your local database credentials and port configurations
+by following the template instructions provided in their respective sub-application READMEs.
 
 ### 5. Launch the Development Services
 
-Start both systems concurrently inside a single terminal terminal context:
+Start both systems concurrently inside a single terminal context:
 
 ```bash
 npm run dev
 ```
 
-The React development UI boots on `http://localhost:5173` and the Express routing engine starts listening for requests on port `8081`.
+The React frontend boots on `http://localhost:5173` and the Express server starts listening for requests on port `8081`.
 
 ## Sub-Application READMEs
 
@@ -135,10 +134,7 @@ The React development UI boots on `http://localhost:5173` and the Express routin
 
 ## Roadmap
 
-- **Phase 1: ACID Database Transactions:** Wrap multi-site inventory balancing utilities within strict Sequelize transaction boundaries to
-  guarantee atomic database updates (e.g., ensuring material reductions in Area A and additions in Area B execute as a single, unbreakable
-  block).
-- **Phase 2: Barcode Mobile Companion API:** Expose stateless JSON payload endpoints specifically optimized for a future React Native
-  mobile application, allowing "field workers" to scan physical materials for instant inventory updates without manual data-entry, thereby reducing errors.
-- **Phase 3: Deepened Testing Coverage:** Expand the custom Jest testing suite to fully mock network isolation parameters and automate deep
+- **Phase 1: Barcode/QR Mobile Companion App:** A future React Native mobile app, allowing field workers to scan physical materials for
+  instant inventory updates without manual data-entry, thereby reducing errors.
+- **Phase 2: Deepened Testing Coverage:** Expand the custom Jest testing suite to better mock network isolation parameters and automate
   end-to-end endpoint verification across all active user roles.
