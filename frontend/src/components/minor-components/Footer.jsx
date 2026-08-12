@@ -12,7 +12,6 @@ const Footer = () => {
   return (
     <footer className="footer">
       <div className="footerContent">
-        <p>Developed for full-stack portfolio presentation.</p>
         <p>
           &copy; 2025 - {new Date().getFullYear()} <strong>Walter Pompa</strong>
           . All rights reserved. | <em>JobsiteSync</em>

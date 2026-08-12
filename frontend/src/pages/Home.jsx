@@ -27,13 +27,12 @@ export default function Home() {
           <span className={styles.badge}>JobsiteSync</span>
 
           <h1 className={styles.heroTitle}>
-            Eliminate Material Fragmentation Across Your Active Jobsites
+            Stop Losing Track of Your Materials and Quantities
           </h1>
 
           <p className={styles.heroSubtitle}>
-            A centralized, full-stack management system designed to track what
-            inventory you have available, exactly where it is stored, and who
-            handled it last.
+            A jobsite logistics system built to track exactly what inventory you
+            have available, where it is stored, and who moved it last.
           </p>
 
           <div className={styles.buttonGroup}>
@@ -53,20 +52,20 @@ export default function Home() {
 
       <section className={styles.problemSection}>
         <div className={styles.sectionHeader}>
-          <h2>The Operational Bottleneck</h2>
+          <h2>The Hidden Cost of Messy Logistics</h2>
           <p>
-            Why modern construction crews lose profit margins to material
-            management friction.
+            How loose tracking and poor field coordination drain project
+            margins.
           </p>
         </div>
 
         <div className={styles.problemGrid}>
           <div className={styles.problemCard}>
-            <h4>Fragmented Paper Logs</h4>
+            <h4>Scattered Paper Logs</h4>
 
             <p>
-              Relying on loose intake clipboards and scattered text messages
-              leads to severe material inaccuracies and accidental reorders.
+              Relying on loose intake sheets and scattered text messages leads
+              to severe, chronic material inaccuracies and expensive reorders.
             </p>
           </div>
 
@@ -74,9 +73,9 @@ export default function Home() {
             <h4>Blind Storage Locations</h4>
 
             <p>
-              Knowing you have available resources is useless if your team
-              spends hours searching the wrong storage areas trying to
-              physically locate them.
+              Knowing an item is "somewhere in the yard" is useless if your crew
+              wastes hours searching through the wrong storage bins to
+              physically locate it.
             </p>
           </div>
         </div>
@@ -84,11 +83,11 @@ export default function Home() {
 
       <section className={styles.solutionSection}>
         <div className={styles.sectionHeader}>
-          <h2>Designed for High-Velocity Logistics</h2>
+          <h2>Built for Real-World Construction Logistics</h2>
 
           <p>
-            A robust asset engine engineered to handle complex field operations
-            without performance compromises.
+            An easy to use logistics system engineered to handle your typical
+            jobsite operations without the administrative friction.
           </p>
         </div>
 
@@ -98,13 +97,15 @@ export default function Home() {
               <LightningBoltIcon className={styles.lightningbolt} />
             </div>
 
-            <h3>Lag-Free Bulk Updating</h3>
+            <h3>Single-Screen Row And Bulk Edits</h3>
 
             <p>
-              Modify quantities and storage notes directly within your data
-              grid. Changes process asynchronously in the background, updating
-              your active workspace instantly without disruptive full-page
-              loader delays.
+              <p>
+                Update stock quantities, log material changes, and edit multiple
+                line items instantly from a single screen. No lag or slow page
+                reloads, ensuring your back office can keep pace with
+                fast-moving field crews and delivery schedules.
+              </p>
             </p>
           </div>
 
@@ -113,13 +114,16 @@ export default function Home() {
               <MapPinIcon className={styles.mapPinIcon} />
             </div>
 
-            <h3>Sub-Location Allocation</h3>
+            <h3>Multi-Site & Bin-Level Tracking</h3>
 
             <p>
-              Eliminate blind spots. Track inventory down to specific storage
-              yards, sheds, bins, or containers using a strict relational model
-              that guarantees your counts stay perfectly aligned across
-              multi-tiered sites.
+              <p>
+                Eliminate yard chaos. Track your material allocations down to
+                specific laydown yards, storage sheds, individual bins, or
+                jobsite containers. Maintain precise quantities across all
+                active projects so crews never waste hours hunting for what they
+                need.
+              </p>
             </p>
           </div>
 
@@ -128,13 +132,14 @@ export default function Home() {
               <ShieldHalvedIcon className={styles.shieldIcon} />
             </div>
 
-            <h3>Fail-Safe Material Guards</h3>
+            <h3>Admin Controls & Audit Trails</h3>
 
             <p>
-              Protect your operational history from human error. Integrated
-              server-side validation blocks blank submissions, intercepts
-              accidental bulk deletions, and stops duplicate record corruption
-              automatically.
+              Protect your material history from accidental overrides and human
+              error. Enforce strict permissions for bulk adjustments, lock down
+              critical deletion rights to authorized coordinators, and maintain
+              a permanent audit log of every stock change for individual
+              accountability.
             </p>
           </div>
         </div>
