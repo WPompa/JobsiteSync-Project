@@ -100,12 +100,10 @@ export default function Home() {
             <h3>Single-Screen Row And Bulk Edits</h3>
 
             <p>
-              <p>
-                Update stock quantities, log material changes, and edit multiple
-                line items instantly from a single screen. No lag or slow page
-                reloads, ensuring your back office can keep pace with
-                fast-moving field crews and delivery schedules.
-              </p>
+              Update stock quantities, log material changes, and edit multiple
+              line items instantly from a single screen. No lag or slow page
+              reloads, ensuring your back office can keep pace with fast-moving
+              field crews and delivery schedules.
             </p>
           </div>
 
@@ -117,13 +115,10 @@ export default function Home() {
             <h3>Multi-Site & Bin-Level Tracking</h3>
 
             <p>
-              <p>
-                Eliminate yard chaos. Track your material allocations down to
-                specific laydown yards, storage sheds, individual bins, or
-                jobsite containers. Maintain precise quantities across all
-                active projects so crews never waste hours hunting for what they
-                need.
-              </p>
+              Eliminate yard chaos. Track your material allocations down to
+              specific laydown yards, storage sheds, individual bins, or jobsite
+              containers. Maintain precise quantities across all active projects
+              so crews never waste hours hunting for what they need.
             </p>
           </div>
 
