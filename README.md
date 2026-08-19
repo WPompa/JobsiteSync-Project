@@ -6,7 +6,7 @@ JobsiteSync is a B2B construction material logistics system built to track inven
 localized storage units. The application has a normalized multi-table database schema that uses Sequelize ORM and raw SQL queries. The
 application features a mock SaaS landing page selling a product and transitions into a functional, paginated administrative control
 dashboard. It is a portfolio project to demonstrate junior-level, full-stack competency and not meant to meet real SaaS product
-requirements. **It is as a browser-first tool for administrators or logistics coordinators**. A separate companion mobile app is
+requirements. **It is a browser-first tool for administrators or logistics coordinators**. A separate companion mobile app is
 planned for employees active on a jobsite or running ground logistics. For demo purposes there is access via a dedicated "Guest Bypass"
 authentication route.
 
@@ -113,7 +113,7 @@ queries for the performance indexes are in the backend `README.md` file.
 ### 4. Setup Environment Variables
 
 Create a `.env` file in both the `/frontend` and `/backend` directories. Fill in your local database credentials and port configurations
-by following the template instructions provided in their respective sub-application READMEs.
+by following the template instructions provided in the respective READMEs.
 
 ### 5. Launch the Development Services
 
@@ -136,5 +136,4 @@ The React frontend boots on `http://localhost:5173` and the Express server start
 
 - **Phase 1: Barcode/QR Mobile Companion App:** A future React Native mobile app, allowing field workers to scan physical materials for
   instant inventory updates without manual data-entry, thereby reducing errors.
-- **Phase 2: Deepened Testing Coverage:** Expand the custom Jest testing suite to better mock network isolation parameters and automate
-  end-to-end endpoint verification across all active user roles.
+- **Phase 2: Deepened Testing Coverage:** Expand the custom Jest testing suite to better mock backend logic and routing.
