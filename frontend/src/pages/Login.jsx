@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { useNavigate, Navigate } from "react-router-dom";
 import { useToast } from "@contexts/ToastContext";
 import { UserContext } from "../App";
@@ -14,12 +14,65 @@ const Login = ({ setUser }) => {
   const { addToast } = useToast();
   const navigate = useNavigate();
 
-  const bypass = () => {
-    localStorage.setItem("token", "Gu3$t");
-    setUser({ username: "Guest" });
-    addToast("Logged in as guest user!", "success");
+  useEffect(() => {
+    const checkAuth = async () => {
+      const jwtToken = localStorage.getItem("token");
 
-    navigate("/Dashboard");
+      if (jwtToken && jwtToken !== "undefined") {
+        try {
+          setIsLoading(true);
+
+          const response = await api.get("auth", {
+            skipGlobalToast: true,
+            useLogin: true,
+          });
+
+          if (response.result) {
+            setUser({ username: response.username });
+            addToast(`Logged in as ${response.username}!`, "success");
+            navigate("/Dashboard");
+          } else {
+            localStorage.removeItem("token");
+            setError("Authentication Failed");
+          }
+        } catch (error) {
+          setError(`${error?.message || "Unknown Error"}`);
+        } finally {
+          setIsLoading(false);
+        }
+      } else {
+        return;
+      }
+    };
+
+    checkAuth();
+  }, []);
+
+  const bypass = async () => {
+    setIsLoading(true);
+    const guestLogin = { username: "Guest", password: "password" };
+
+    try {
+      const response = await api.post(
+        "login",
+        { login: guestLogin },
+        { skipGlobalToast: true, useLogin: true },
+      );
+
+      if (response.result) {
+        localStorage.setItem("token", response.token);
+        setUser({ username: "Guest" });
+        addToast("Logged in as guest user!", "success");
+        navigate("/Dashboard");
+      } else {
+        localStorage.removeItem("token");
+        setError("Guest Bypass Failed");
+      }
+    } catch (error) {
+      setError(`${error?.message || "Unknown Error"}`);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -42,7 +95,7 @@ const Login = ({ setUser }) => {
       const response = await api.post(
         "login",
         { login },
-        { skipGlobalToast: true },
+        { skipGlobalToast: true, route },
       );
 
       if (response.result) {

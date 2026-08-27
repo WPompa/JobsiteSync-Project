@@ -1,10 +1,11 @@
-import { useState, useContext } from "react";
+import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@contexts/ToastContext";
 import { UserContext } from "../App";
+import { api } from "../services/API-Service";
 import LightningBoltIcon from "../components/minor-components/icons/LightningBoltIcon";
 import MapPinIcon from "../components/minor-components/icons/MapPinIcon";
-import ShieldHalvedIcon from "../components/minor-components/icons/ShieldHalvedIcon";
+import ShieldFour from "../components/minor-components/icons/ShieldFour";
 import styles from "./css/Home.module.css";
 
 export default function Home() {
@@ -13,11 +14,27 @@ export default function Home() {
   const { addToast } = useToast();
 
   const handleGuestBypass = async () => {
-    addToast("Logged in as guest user!", "success");
-    localStorage.setItem("token", "Gu3$t");
-    setUser({ username: "Guest" });
+    const guestLogin = { username: "Guest", password: "password" };
 
-    navigate("/Dashboard");
+    try {
+      const response = await api.post(
+        "login",
+        { login: guestLogin },
+        { skipGlobalToast: true, useLogin: true },
+      );
+
+      if (response.result) {
+        localStorage.setItem("token", response.token);
+        setUser({ username: "Guest" });
+        addToast("Logged in as guest user!", "success");
+        navigate("/Dashboard");
+      } else {
+        localStorage.removeItem("token");
+        addToast("Guest Bypass Failed", "error");
+      }
+    } catch (error) {
+      addToast(`${error?.message || "Unknown Error"}`, "error");
+    }
   };
 
   return (
@@ -124,7 +141,7 @@ export default function Home() {
 
           <div className={styles.featureCard}>
             <div className={styles.iconBox}>
-              <ShieldHalvedIcon className={styles.shieldIcon} />
+              <ShieldFour className={styles.shieldIcon} />
             </div>
 
             <h3>Admin Controls & Audit Trails</h3>

@@ -12,17 +12,12 @@ const authentication = async (req, res, next) => {
   const token = authHeader.split(" ")[1];
 
   try {
-    if (token === "Gu3$t") {
-      req.user = { AccountID: -1, username: "Guest" };
-      next();
-    } else {
-      //decoded.username. decoded will have accessable properties.
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      const { AccountID, username } = decoded;
+    //decoded.username. decoded will have accessable properties.
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const { AccountID, username } = decoded;
 
-      req.user = { AccountID, username };
-      next();
-    }
+    req.user = { AccountID, username };
+    next();
   } catch (error) {
     console.error(error.name);
     throw new AppError("Not Authorized", 401);

@@ -21,7 +21,7 @@ fully functional "Guest Bypass" path, allowing immediate application testing wit
 Create a file named `.env` in the root configuration section of the `/frontend` directory:
 
 ```env
-VITE_LOGIN_URL = "http://localhost:8081/login"
+VITE_LOGIN_URL = "http://localhost:8081/"
 VITE_API_URL = "http://localhost:8081/api/v1/"
 ```
 

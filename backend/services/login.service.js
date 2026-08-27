@@ -41,4 +41,16 @@ const login = async (sequelize, username, password) => {
   return { status: "success", result: true, token };
 };
 
-module.exports = login;
+// Does not return promise. The controller is async to handle errors like the other controllers.
+const authMe = (jwtToken) => {
+  const decoded = jwt.verify(jwtToken, process.env.JWT_SECRET);
+  const { AccountID, username } = decoded;
+
+  if (AccountID && username) {
+    return { status: "success", result: true, username };
+  } else {
+    return { status: "error", result: false, username: "N/A" };
+  }
+};
+
+module.exports = { login, authMe };

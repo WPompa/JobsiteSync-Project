@@ -36,6 +36,13 @@ const errorHandler = (err, req, res, next) => {
     });
   }
 
+  if (err.name === "JsonWebTokenError") {
+    console.error(err);
+    return res
+      .status(401)
+      .json({ status: "error", message: "Authentication Failed." });
+  }
+
   console.log(err);
   //console.log(JSON.stringify(err, null, 2));
 

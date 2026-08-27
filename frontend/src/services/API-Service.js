@@ -1,10 +1,11 @@
 import { toastEvents } from "../utils/toastEvents";
 
 const BASE_URL = new URL(import.meta.env.VITE_API_URL);
+const LOGIN_URL = new URL(import.meta.env.VITE_LOGIN_URL);
 
 export const httpFetchRequest = async (endpoint, options = {}) => {
   const token = localStorage.getItem("token");
-  const API_URL = new URL(endpoint, BASE_URL);
+  const API_URL = new URL(endpoint, options.useLogin ? LOGIN_URL : BASE_URL);
 
   const headers = {
     "Content-Type": "application/json",
