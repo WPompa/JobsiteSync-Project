@@ -12,7 +12,6 @@ const authentication = async (req, res, next) => {
   const token = authHeader.split(" ")[1];
 
   try {
-    //decoded.username. decoded will have accessable properties.
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const { AccountID, username } = decoded;
 

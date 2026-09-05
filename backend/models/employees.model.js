@@ -1,6 +1,4 @@
 "use strict";
-/* const { sequelize } = require("../database/connect"); 
-const { DataTypes } = require("sequelize");*/
 
 module.exports = (sequelize, DataTypes) => {
   const Employee = sequelize.define(
@@ -78,10 +76,3 @@ module.exports = (sequelize, DataTypes) => {
   );
   return Employee;
 };
-
-//Creation example: const employee = await Employee.create({objFromFrontend}, {fields: [allowedValuesUnlistedAreIgnored]})
-
-//Creation example: const employee = await Employee.create({objFromFrontend}, {fields: [allowedValuesUnlistedAreIgnored]})
-/*
-module.exports = Employee;
- */

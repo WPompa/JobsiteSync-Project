@@ -23,7 +23,6 @@ const getJobsites = async (
   currentPage,
   currentLimit,
 ) => {
-  //const totalCount = await JobsiteModel.count();
   [{ Count: totalCount }] = await sequelize.query(tables[table.name].count(), {
     type: QueryTypes.SELECT,
   });
@@ -34,17 +33,11 @@ const getJobsites = async (
     totalCount,
   );
 
-  /* const result = await JobsiteModel.findAll({
-    attributes: ["JobsiteID", ["JobsiteName", "Jobsite"]],
-    offset,
-    limit,
-  }); */
   const result = await sequelize.query(tables[table.name].query(), {
     replacements: { limit, offset },
     type: QueryTypes.SELECT,
   });
 
-  //If pagination works as intended this snippet might never be used.
   if (!result || result.length === 0) {
     throw new AppError("No Data For Selected Page", 404);
   }
@@ -64,7 +57,6 @@ const createJobsite = async (
 
   removeEmptyValues(JobsiteData);
 
-  //If Primary key value is given, check if it is already in use.
   if (JobsiteData?.JobsiteID) {
     const [instanceObj, isCreated] = await JobsiteModel.findOrCreate({
       where: { JobsiteID: JobsiteData.JobsiteID },
@@ -91,7 +83,7 @@ const createJobsite = async (
     return instanceObj.get({ plain: true });
   }
 
-  const result = await JobsiteModel.create(JobsiteData); //{fields: []} to exclude injected key-values.
+  const result = await JobsiteModel.create(JobsiteData);
 
   await createActivity_Log(activity_logsModel, {
     ActionType: "CREATE",
@@ -105,7 +97,6 @@ const createJobsite = async (
   return result.get({ plain: true });
 };
 
-//useEmpty is an object with booleans used for flagging values that should be set to null.
 const updateJobsites = async (
   JobsiteModel,
   activity_logsModel,

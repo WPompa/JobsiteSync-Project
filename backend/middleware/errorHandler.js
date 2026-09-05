@@ -3,7 +3,7 @@ const { AppError } = require("../utils/AppError");
 
 const errorHandler = (err, req, res, next) => {
   if (err instanceof AppError) {
-    console.error("AppError: ", err.message); // comment out when testing
+    console.error("AppError: ", err.message); // comment out when testing, else it will spam the console.
 
     return res.status(err.statusCode).json({
       status: "error",
@@ -24,9 +24,6 @@ const errorHandler = (err, req, res, next) => {
         cleanUserMessage = `${err.errors[0].path} is already taken. Please try another value.`;
       } else {
         cleanUserMessage = err.errors.map((error) => error.message).join("\n");
-
-        // Alternative layout: "Email is invalid. Password is too short."
-        // cleanUserMessage = err.errors.map(error => error.message).join(". ");
       }
     }
     return res.status(400).json({
@@ -44,7 +41,6 @@ const errorHandler = (err, req, res, next) => {
   }
 
   console.log(err);
-  //console.log(JSON.stringify(err, null, 2));
 
   return res.status(500).json({
     status: "error",

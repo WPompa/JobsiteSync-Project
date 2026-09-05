@@ -10,8 +10,6 @@ const login = async (sequelize, username, password) => {
     },
   );
 
-  //console.log(username + password); // Only for debugging purposes.
-
   if (username === "Guest" && password === "password") {
     const token = jwt.sign(
       { AccountID: -1, username },

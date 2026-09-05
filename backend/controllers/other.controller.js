@@ -1,5 +1,5 @@
 const service = require("../services/other.service");
-const asyncWrapper = require("../middleware/asyncWrapper"); //Try Catch wrapper
+const asyncWrapper = require("../middleware/asyncWrapper");
 
 const getOther = asyncWrapper(async (req, res, next) => {
   const { table, page, limit } = req.query;

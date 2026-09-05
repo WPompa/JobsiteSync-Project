@@ -24,13 +24,6 @@ module.exports = (sequelize, DataTypes) => {
           },
         },
       },
-      /* JobsiteSupervisorID: {
-      type: DataTypes.INTEGER,
-      references: {
-        model: "employees",
-        key: "EmpID",
-      },
-    }, */
     },
     {
       tableName: "jobsites",

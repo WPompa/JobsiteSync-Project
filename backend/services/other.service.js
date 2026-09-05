@@ -4,7 +4,6 @@ const getPagination = require("../utils/paginationHelper");
 const tables = require("../utils/RawQueries");
 
 const getOther = async (sequelize, tableName, currentPage, currentLimit) => {
-  //Will return [ { Count: <number> } ]
   [{ Count: totalCount }] = await sequelize.query(tables[tableName].count(), {
     type: QueryTypes.SELECT,
   });
@@ -20,7 +19,6 @@ const getOther = async (sequelize, tableName, currentPage, currentLimit) => {
     type: QueryTypes.SELECT,
   });
 
-  //If pagination works as intended this snippet might never be used.
   if (!result || result.length === 0) {
     throw new AppError("No Data For Selected Page", 404);
   }

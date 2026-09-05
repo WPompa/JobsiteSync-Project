@@ -25,22 +25,10 @@ const getMaterials = async (materialModel, currentPage, currentLimit) => {
   );
 
   const result = await materialModel.findAll({
-    /* attributes: [
-      "MaterialID",
-      "Name",
-      ["MaterialType", "Mat. Type"],
-      ["Length", "Box Length"],
-      ["Width", "Box Width"],
-      ["Height", "Box Height"],
-      ["SupplierName", "Supplier"],
-      ["TotalAvailable", "Available"],
-      ["LostAmounts", "Trashed"],
-    ], */
     offset,
     limit,
   });
 
-  //If pagination works as intended this snippet might never be used.
   if (!result || result.length === 0) {
     throw new AppError("No Data For Selected Page", 404);
   }
@@ -60,7 +48,6 @@ const createMaterial = async (
 
   removeEmptyValues(materialData);
 
-  //If Primary key value is given, check if it is already in use.
   if (materialData?.MaterialID) {
     const [instanceObj, isCreated] = await materialModel.findOrCreate({
       where: { MaterialID: materialData.MaterialID },
@@ -89,7 +76,7 @@ const createMaterial = async (
     return instanceObj.get({ plain: true });
   }
 
-  const result = await materialModel.create(materialData); //{fields: []} to exclude injected key-values.
+  const result = await materialModel.create(materialData);
 
   await createActivity_Log(activity_logsModel, {
     ActionType: "CREATE",
@@ -103,7 +90,6 @@ const createMaterial = async (
   return result.get({ plain: true });
 };
 
-//useEmpty is an object with booleans used for flagging values that should be set to null.
 const updateMaterials = async (
   materialModel,
   activity_logsModel,

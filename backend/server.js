@@ -14,7 +14,7 @@ const allowedOrigins = [process.env.FRONTEND_URL, process.env.DEV_URL];
 const corsOptions = {
   origin: (origin, callback) => {
     if (!origin || allowedOrigins.includes(origin)) {
-      //console.log("Allowed Origin: ", origin); //Comment out when testing
+      //console.log("Allowed Origin: ", origin); //Comment out when testing, it spams the console.
 
       callback(null, true);
     } else {
@@ -26,14 +26,14 @@ const corsOptions = {
   methods: ["GET", "POST", "PUT", "DELETE", "HEAD", "PATCH"],
 };
 
-//from express-rate-limit with a few changes.
+// From express-rate-limit with a few changes.
 const limiter = rateLimit({
   windowMs: 10 * 60 * 1000, // 10 minutes
   limit: 50, // Limit each IP to 50 requests per `window` (here, per 10 minutes).
   standardHeaders: "draft-8", // draft-6: `RateLimit-*` headers; draft-7 & draft-8: combined `RateLimit` header
   legacyHeaders: false, // Disable the `X-RateLimit-*` headers.
   ipv6Subnet: 56, // Set to 60 or 64 to be less aggressive, or 52 or 48 to be more aggressive
-  // store: ... , // Redis, Memcached, etc. See below.
+  // store: ... , // Redis, Memcached, etc.
 });
 
 ///// Middleware /////
@@ -84,15 +84,11 @@ app.use(errorHandler);
 ///////////////////////////////////////////////////
 
 //For development
-/* let serverInstance; */
-
+//uncomment here for dev//
 /* async function start() {
-  //uncomment here for dev//
   try {
-    // await connectToDB();
-    // await sequelize.authenticate();
     console.log("Connected to the MySQL database.");
-    //serverInstance =
+
     app.listen(8081, () => {
       console.log("Server listening...");
     });
@@ -100,19 +96,8 @@ app.use(errorHandler);
     console.log(error);
     console.log("Server Initialization Aborted.");
   }
-} */ //uncomment here for dev//
+}
 
-/* const shutdown = () => {
-  console.log("Shutting down...");
-  serverInstance.close(() => {
-    console.log("HTTP server closed.");
-    process.exit(0);
-  });
-}; */
-
-//start(); //uncomment here for dev//
-
-/* console.log("models: ");
-console.log(sequelize.models); */
+start(); */ //uncomment here for dev//
 
 module.exports = app;

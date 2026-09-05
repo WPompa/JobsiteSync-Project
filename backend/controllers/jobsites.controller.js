@@ -1,5 +1,5 @@
 const service = require("../services/jobsites.service");
-const asyncWrapper = require("../middleware/asyncWrapper"); //Try Catch wrapper
+const asyncWrapper = require("../middleware/asyncWrapper");
 
 const getJobsites = asyncWrapper(async (req, res, next) => {
   const { page, limit } = req.query;

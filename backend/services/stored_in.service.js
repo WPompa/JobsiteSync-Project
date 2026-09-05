@@ -23,7 +23,6 @@ const getStored_In = async (
   currentPage,
   currentLimit,
 ) => {
-  //const totalCount = await stored_inModel.count();
   [{ Count: totalCount }] = await sequelize.query(tables[table.name].count(), {
     type: QueryTypes.SELECT,
   });
@@ -34,17 +33,11 @@ const getStored_In = async (
     totalCount,
   );
 
-  /* const result = await stored_inModel.findAll({
-    attributes: ["StorageAreaID", "MaterialID", "Amount"],
-    offset,
-    limit,
-  }); */
   const result = await sequelize.query(tables[table.name].query(), {
     replacements: { limit, offset },
     type: QueryTypes.SELECT,
   });
 
-  //If pagination works as intended this snippet might never be used.
   if (!result || result.length === 0) {
     throw new AppError("No Data For Selected Page", 404);
   }
@@ -64,7 +57,6 @@ const createStored_In = async (
 
   //removeEmptyValues(stored_inData); //Required Array is checked for everything already in this case.
 
-  //If Primary key value is given, check if it is already in use.
   if (stored_inData?.StorageAreaID && stored_inData?.MaterialID) {
     const [instanceObj, isCreated] = await stored_inModel.findOrCreate({
       where: {
@@ -97,12 +89,11 @@ const createStored_In = async (
   }
 
   //Because the IDs are required, the row should be created above and never here.
-  /* const result = await stored_inModel.create(stored_inData); //{fields: []} to exclude injected key-values.
+  /* const result = await stored_inModel.create(stored_inData);
 
   return result.get({ plain: true }); */
 };
 
-//useEmpty is an object with booleans used for flagging values that should be set to null.
 const updateStored_In = async (
   stored_inModel,
   activity_logsModel,
@@ -259,8 +250,8 @@ const deleteStored_In = async (
 
   if (result === 0) {
     throw new AppError("No authorized matching records found to delete.", 404);
-    /* throw new AppError("No matching records found to delete.", 404);
-     // Use if there is no check for protected data */
+    // Use instead if there is no check for protected data
+    //throw new AppError("No matching records found to delete.", 404);
   }
 
   const materials =

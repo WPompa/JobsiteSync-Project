@@ -1,5 +1,5 @@
 const service = require("../services/employees.service");
-const asyncWrapper = require("../middleware/asyncWrapper"); //Try Catch wrapper
+const asyncWrapper = require("../middleware/asyncWrapper");
 
 const getEmployees = asyncWrapper(async (req, res, next) => {
   const { page, limit } = req.query;
@@ -22,7 +22,6 @@ const createEmployee = asyncWrapper(async (req, res, next) => {
 
   const result = await service.createEmployee(employees, body);
 
-  //console.log(JSON.stringify(result));
   res
     .status(201)
     .json({ status: "success", result, message: "Employee Created!" });
@@ -34,7 +33,6 @@ const updateEmployees = asyncWrapper(async (req, res, next) => {
 
   const result = await service.updateEmployees(employees, body, useEmpty);
 
-  // Just a reminder to self that DB constraints or an extensive list of rows need to be handled. This is temp.
   if (result === null) {
     return res.status(204).send();
   }

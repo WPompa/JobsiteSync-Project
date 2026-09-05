@@ -1,5 +1,5 @@
 const service = require("../services/materials.service");
-const asyncWrapper = require("../middleware/asyncWrapper"); //Try Catch wrapper
+const asyncWrapper = require("../middleware/asyncWrapper");
 
 const getMaterials = asyncWrapper(async (req, res, next) => {
   const { page, limit } = req.query;

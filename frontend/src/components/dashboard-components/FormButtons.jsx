@@ -23,7 +23,7 @@ function FormButtons({
       ? httpMethod(httpBody, chosenTable, useEmpty)
       : httpMethod(httpBody, chosenTable);
 
-    setHTTPBody({}); //dont forget to clear error state
+    setHTTPBody({});
   };
 
   const closeForm = () => {

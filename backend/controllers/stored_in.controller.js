@@ -1,5 +1,5 @@
 const service = require("../services/stored_in.service");
-const asyncWrapper = require("../middleware/asyncWrapper"); //Try Catch wrapper
+const asyncWrapper = require("../middleware/asyncWrapper");
 
 const getStored_In = asyncWrapper(async (req, res, next) => {
   const { page, limit } = req.query;

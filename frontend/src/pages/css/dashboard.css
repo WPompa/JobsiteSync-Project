@@ -1,6 +1,4 @@
-/* ============================================================
-    General & Layout
-   ============================================================ */
+/* ----- General & Layout ----- */
 .dashboard-item {
   display: block;
   box-sizing: border-box;
@@ -50,9 +48,7 @@
   text-transform: uppercase;
 }
 
-/* ============================================================
-    Select & Pagination (Top)
-   ============================================================ */
+/* ----- Select & Pagination (Top) ----- */
 .select-container {
   display: grid;
   grid-template-columns: 1fr;
@@ -92,9 +88,7 @@
   align-items: center;
 }
 
-/* ============================================================
-    Input Controls & Pagination (Bottom)
-   ============================================================ */
+/* ----- Input Controls & Pagination (Bottom) ----- */
 .dashboard-input-container {
   display: flex;
   flex-direction: column;
@@ -144,9 +138,7 @@
   transform: none;
 }
 
-/* ============================================================
-    Form Layout & Fields
-   ============================================================ */
+/* ----- Form Layout & Fields ----- */
 .dashboard-form-container {
   display: flex;
   flex-direction: column;
@@ -241,7 +233,7 @@
   border: 2px solid #ff4d4d;
 }
 
-/*Slight Conflict with error-text in login.css*/
+/* Slight Conflict with error-text in login.css */
 .error-text {
   color: #ff4d4d;
   font-size: 0.75rem;
@@ -255,9 +247,7 @@
   margin-top: 0.25rem;
 }
 
-/* ============================================================
-    Form Info & CRUD Buttons
-   ============================================================ */
+/* ----- Form Info & CRUD Buttons ----- */
 /* --- Form Info & Buttons --- */
 .dashboard-form-info {
   display: flex;
@@ -287,7 +277,7 @@
   margin-right: 0.25rem;
 }
 
-/*add & submit buttons dashboard-form*/
+/* --- add & submit buttons dashboard-form --- */
 .form-btns-container {
   display: flex;
   justify-content: center;
@@ -409,9 +399,7 @@
   border-style: dashed;
 }
 
-/* ============================================================
-    Delete-Specific & Warning States
-   ============================================================ */
+/* ----- Delete-Specific & Warning States ----- */
 .delete-form {
   border: 1px solid rgba(139, 0, 0, 0.3);
   background-color: rgba(139, 0, 0, 0.05);
@@ -431,9 +419,7 @@
   color: #b80000;
 }
 
-/* ============================================================
-    Media Queries
-   ============================================================ */
+/* ----- Media Queries ----- */
 @media only screen and (max-width: 1000px) {
   .dashboard-item {
     width: 100%;

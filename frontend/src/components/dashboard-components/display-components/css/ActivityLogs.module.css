@@ -17,7 +17,7 @@
   font-size: 1.2rem;
 }
 
-/* ----- iPhone 13 - Portrait ----- */
+/* ----- Mobile ----- */
 @media only screen and (max-width: 550px) {
   .activityLogs-container {
     grid-template-columns: 1fr 1fr;

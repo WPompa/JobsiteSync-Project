@@ -23,7 +23,6 @@ const getStorage_Areas = async (
   currentPage,
   currentLimit,
 ) => {
-  //const totalCount = await storage_areaModel.count();
   [{ Count: totalCount }] = await sequelize.query(tables[table.name].count(), {
     type: QueryTypes.SELECT,
   });
@@ -34,26 +33,11 @@ const getStorage_Areas = async (
     totalCount,
   );
 
-  /* const result = await storage_areaModel.findAll({
-    attributes: [
-      "StorageAreaID",
-      ["Length", "Inner Length"],
-      ["Width", "Inner Width"],
-      ["Height", "Inner Height"],
-      "Location",
-      ["JobsiteID", "Jobsite"],
-      ["TotalStored", "Total Items"],
-      ["Is_Container", "Container?"],
-    ],
-    offset,
-    limit,
-  }); */
   const result = await sequelize.query(tables[table.name].query(), {
     replacements: { limit, offset },
     type: QueryTypes.SELECT,
   });
 
-  //If pagination works as intended this snippet might never be used.
   if (!result || result.length === 0) {
     throw new AppError("No Data For Selected Page", 404);
   }
@@ -73,7 +57,6 @@ const createStorage_Area = async (
 
   removeEmptyValues(storage_areaData);
 
-  //If Primary key value is given, check if it is already in use.
   if (storage_areaData?.StorageAreaID) {
     const [instanceObj, isCreated] = await storage_areaModel.findOrCreate({
       where: {
@@ -104,7 +87,7 @@ const createStorage_Area = async (
     return instanceObj.get({ plain: true });
   }
 
-  const result = await storage_areaModel.create(storage_areaData); //{fields: []} to exclude injected key-values.
+  const result = await storage_areaModel.create(storage_areaData);
 
   await createActivity_Log(activity_logsModel, {
     ActionType: "CREATE",
@@ -118,7 +101,6 @@ const createStorage_Area = async (
   return result.get({ plain: true });
 };
 
-//useEmpty is an object with booleans used for flagging values that should be set to null.
 const updateStorage_Areas = async (
   storage_areaModel,
   activity_logsModel,

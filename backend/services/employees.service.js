@@ -22,7 +22,6 @@ const getEmployees = async (
   currentPage,
   currentLimit,
 ) => {
-  //const totalCount = await employeeModel.count();
   [{ Count: totalCount }] = await sequelize.query(tables[table.name].count(), {
     type: QueryTypes.SELECT,
   });
@@ -33,24 +32,11 @@ const getEmployees = async (
     totalCount,
   );
 
-  /* const result = await employeeModel.findAll({
-    attributes: [
-      "EmpID",
-      ["Fname", "Forename"],
-      ["Lname", "Surname"],
-      "Title",
-      "SupervisorID",
-      "JobsiteID",
-    ],
-    offset,
-    limit,
-  }); */
   const result = await sequelize.query(tables[table.name].query(), {
     replacements: { limit, offset },
     type: QueryTypes.SELECT,
   });
 
-  //If pagination works as intended this snippet might never be used.
   if (!result || result.length === 0) {
     throw new AppError("No Data For Selected Page", 404);
   }
@@ -65,7 +51,6 @@ const createEmployee = async (employeeModel, employeeData) => {
 
   removeEmptyValues(employeeData);
 
-  //If Primary key value is given, check if it is already in use.
   if (employeeData?.EmpID) {
     const [instanceObj, isCreated] = await employeeModel.findOrCreate({
       where: { EmpID: employeeData.EmpID },
@@ -83,12 +68,11 @@ const createEmployee = async (employeeModel, employeeData) => {
     return instanceObj.get({ plain: true });
   }
 
-  const result = await employeeModel.create(employeeData); // Note : {fields: []} to exclude injected key-values.
+  const result = await employeeModel.create(employeeData);
 
   return result.get({ plain: true });
 };
 
-//useEmpty is an object with booleans used for flagging values that should be set to null.
 const updateEmployees = async (employeeModel, employeeData, useEmpty) => {
   const required = ["EmpID"];
 
@@ -134,7 +118,7 @@ const updateEmployees = async (employeeModel, employeeData, useEmpty) => {
 };
 
 const patchEmployee = async (employeeModel, EmpID, patchData) => {
-  // Suggested to defend against malicious modifications targeting primary key
+  // Preventive measure against requests trying to modify the PK
   delete patchData?.EmpID;
 
   if (!patchData || Object.keys(patchData).length === 0) {

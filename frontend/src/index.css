@@ -1,6 +1,4 @@
-/* ============================================================
-    DESIGN TOKENS (Variables)
-   ============================================================ */
+/* ----- DESIGN TOKENS (Variables) ----- */
 :root {
   /* Core Colors */
   --primary: #1a1a1a;
@@ -49,9 +47,7 @@
   color-scheme: light dark;
 }
 
-/* ============================================================
-    GLOBAL RESET & BASE STYLES
-   ============================================================ */
+/* ----- GLOBAL RESET & BASE STYLES ----- */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -97,9 +93,7 @@ h1 {
   }
 }
 
-/* ============================================================
-    GLOBAL UI ELEMENTS (Buttons, Links, Inputs)
-   ============================================================ */
+/* ----- GLOBAL UI ELEMENTS (Buttons, Links, Inputs) ----- */
 a {
   font-weight: 500;
   color: var(--text);
@@ -149,9 +143,7 @@ select:hover {
   border-color: var(--hover);
 }
 
-/* ============================================================
-    RESPONSIVE BREAKPOINTS
-   ============================================================ */
+/* ----- RESPONSIVE BREAKPOINTS ----- */
 /* Tablet & Mobile */
 @media screen and (max-width: 1024px) {
   body {

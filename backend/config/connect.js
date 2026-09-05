@@ -1,4 +1,4 @@
-//const mysql = require("mysql2/promise"); //Possible to change to mysql2 w/ no promises
+//
 const { Sequelize, DataTypes } = require("sequelize");
 const Models = require("../models/");
 
@@ -31,8 +31,7 @@ async function connectToDB() {
         timestamps: false,
       },
       dialectModule: require("mysql2"),
-      //ssl?
-    }
+    },
   );
 
   try {
@@ -49,31 +48,4 @@ async function connectToDB() {
   return { sequelize, models: sequelize.models };
 }
 
-//Unused for production, but used for development testing
-/* function connectToDB() {
-  return mysql.createPool({
-    host: process.env.MYSQL_HOST,
-    user: process.env.MYSQL_USER,
-    password: process.env.MYSQL_PASSWORD,
-    database: process.env.MYSQL_DATABASE,
-    waitForConnections: true,
-    connectionLimit: 10,
-    maxIdle: 10,
-    idleTimeout: 60000,
-    queueLimit: 0,
-    enableKeepAlive: true,
-    keepAliveInitialDelay: 0,
-  });
-} */
-
-/* var connection = mysql.createConnection(credentials); //mysql2 no promise version
-
-connection.connect((err) => {
-  if (err) {
-    console.error("Error connecting to the database: " + err.stack);
-    return;
-  }
-  console.log("Connected to the MySQL database.");
-});
-*/
 module.exports = connectToDB;

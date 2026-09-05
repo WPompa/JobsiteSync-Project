@@ -1,5 +1,5 @@
 const service = require("../services/storage_areas.service");
-const asyncWrapper = require("../middleware/asyncWrapper"); //Try Catch wrapper
+const asyncWrapper = require("../middleware/asyncWrapper");
 
 const getStorage_Areas = asyncWrapper(async (req, res, next) => {
   const { page, limit } = req.query;
@@ -27,7 +27,6 @@ const createStorage_Area = asyncWrapper(async (req, res, next) => {
     req.user,
   );
 
-  //console.log(JSON.stringify(result));
   res
     .status(201)
     .json({ status: "success", result, message: "Storage Area Created!" });

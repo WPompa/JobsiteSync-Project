@@ -16,7 +16,6 @@ function SelectTableOptions({ setChosenTable, setHTTPBody }) {
         <option value="storedin">Stored In</option>
         <option value="storageareas">Storage Areas</option>
         <option value="jobsites">Jobsites</option>
-        {/* <option value="activity_log">Activity Log</option> */}
       </select>
     </>
   );

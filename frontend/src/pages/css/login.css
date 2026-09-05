@@ -151,7 +151,7 @@
   }
 }
 
-/* Responsive adjustments */
+/* Mobile */
 @media screen and (max-width: 550px) {
   .login-form {
     width: 95%;
@@ -159,77 +159,3 @@
     padding: 1.5rem 1rem;
   }
 }
-
-/* ----- Login -----*/
-/* .logo {
-  padding: 0.25rem;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em var(--hover));
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  div:nth-of-type(1) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-} */
-
-/* Login page */
-/* .login-image {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: var(--bg-alt);
-  width: 8rem;
-  height: 8rem;
-  margin: 0.5rem auto;
-  border-radius: 50%;
-}
-
-.login-image img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  margin: 0 auto;
-}
-
-.login-form {
-  max-width: 800px;
-  min-width: 390px;
-  margin: 2rem auto;
-  padding: 0.5rem 0 3rem;
-  background-color: var(--bg-alt);
-  box-shadow: var(--lightShadow);
-  border-left: var(--accent) 0.125rem solid;
-}
-
-.login-form h2 {
-  width: 80%;
-  margin: 1rem auto;
-}
-
-.form-label {
-  display: block;
-  margin: 0.75rem auto;
-  width: 80%;
-}
-
-.form-input {
-  margin: 0.25rem 0 0.5rem 0;
-  width: calc(100% - 3rem);
-  box-sizing: border-box;
-}
-
-@media only screen and (max-width: 550px) {
-} */

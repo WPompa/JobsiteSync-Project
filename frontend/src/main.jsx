@@ -1,6 +1,6 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { SpeedInsights } from "@vercel/speed-insights/react"; // keep while hosted on Vercel.
+import { SpeedInsights } from "@vercel/speed-insights/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ToastProvider } from "@contexts/ToastContext";
 import App from "./App.jsx";

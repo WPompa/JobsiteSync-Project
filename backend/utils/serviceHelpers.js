@@ -268,7 +268,7 @@ const filterImmutableData = (inputData, table) => {
     });
   }
 
-  //could add return/appError here to alert the function was called but nothing was mutated.
+  // Could add return/appError here to alert the function was called but nothing was mutated.
 };
 
 module.exports = {
